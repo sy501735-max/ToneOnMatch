@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>StyleMatch — AI 퍼스널컬러 진단 & 샵 예약</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Noto+Sans+KR:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root{
+  --rose:#C8456A;--rose-light:#FAF0F3;--rose-mid:#EFB8C8;--rose-deep:#8B2040;
+  --sage:#4A7C6F;--sage-light:#EBF4F1;
+  --cream:#FAF8F5;--warm:#F5F2EE;
+  --t1:#1C1917;--t2:#78716C;--t3:#A8A29E;
+  --border:#E8E2DC;--white:#FFFFFF;
+  --sh1:0 1px 4px rgba(28,25,23,.06);
+  --sh2:0 4px 16px rgba(28,25,23,.10);
+  --r1:8px;--r2:14px;--r3:20px;--r4:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Noto Sans KR',-apple-system,sans-serif;background:#D6CFC7;display:flex;justify-content:center;min-height:100vh;}
+.shell{width:100%;max-width:390px;min-height:100vh;background:var(--cream);position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.15);}
+.screen{display:none;flex-direction:column;min-height:100vh;}
+.screen.active{display:flex;animation:fi .25s ease;}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.sb{padding:14px 20px 10px;display:flex;justify-content:space-between;align-items:center;font-size:12px;font-weight:600;color:var(--t1);}
+.sc{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.sc::-webkit-scrollbar{display:none;}
+.bn{display:flex;background:var(--white);border-top:1px solid var(--border);padding:8px 0 20px;position:sticky;bottom:0;z-index:100;}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 0;font-size:10px;font-family:'Noto Sans KR',sans-serif;color:var(--t3);transition:color .2s;}
+.nb.active{color:var(--rose);}
+.nb i{font-size:22px;}
+.sec{padding:0 16px;margin-bottom:20px;}
+.sec-ttl{font-size:11px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.card{background:var(--white);border-radius:var(--r3);padding:18px;border:1px solid var(--border);box-shadow:var(--sh1);}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;padding:3px 9px;border-radius:20px;letter-spacing:.03em;}
+.btn-p{width:100%;background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:#fff;border:none;border-radius:var(--r3);padding:15px;font-size:14px;font-weight:600;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(200,69,106,.3);transition:transform .15s;}
+.btn-p:hover{transform:scale(1.02);}
+.btn-o{width:100%;background:none;color:var(--rose);border:1.5px solid var(--rose-mid);border-radius:var(--r3);padding:13px;font-size:14px;font-weight:500;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:background .15s;}
+.btn-o:hover{background:var(--rose-light);}
+
+/* HOME */
+.hh{padding:8px 20px 20px;}
+.greet{font-size:13px;color:var(--t3);margin-bottom:4px;}
+.greet strong{color:var(--rose);font-weight:600;}
+.htitle{font-family:'Playfair Display',serif;font-size:26px;color:var(--t1);line-height:1.3;}
+.hero{margin:0 16px 20px;background:linear-gradient(135deg,#C8456A 0%,#8B2040 60%,#5C1430 100%);border-radius:var(--r4);padding:28px 24px;cursor:pointer;box-shadow:0 8px 32px rgba(200,69,106,.35);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-30px;right:-30px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06);}
+.htag{display:inline-block;background:rgba(255,255,255,.2);color:#fff;font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;margin-bottom:12px;letter-spacing:.04em;}
+.hhead{font-family:'Playfair Display',serif;font-size:22px;color:#fff;line-height:1.3;margin-bottom:8px;}
+.hsub{font-size:12px;color:rgba(255,255,255,.75);margin-bottom:20px;line-height:1.5;}
+.hbtn{display:inline-flex;align-items:center;gap:6px;background:#fff;color:var(--rose-deep);border:none;border-radius:30px;padding:10px 20px;font-size:13px;font-weight:600;font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
+.bkcard{background:var(--white);border-radius:var(--r3);padding:16px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:var(--sh1);}
+.savt{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#F5C4B3,#FAC775);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.bkn{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.bkd{font-size:12px;color:var(--t3);}
+.tcard{background:var(--white);border-radius:var(--r3);padding:18px;border:1px solid var(--border);box-shadow:var(--sh1);}
+.tr{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.tbadge{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:#fff;font-size:13px;font-weight:500;padding:6px 14px;border-radius:20px;}
+.tdate{font-size:11px;color:var(--t3);}
+.prow{display:flex;gap:6px;margin-bottom:12px;}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.12);}
+.tacbtn{width:100%;background:var(--rose-light);color:var(--rose);border:1px solid var(--rose-mid);border-radius:var(--r1);padding:10px;font-size:13px;font-weight:500;font-family:'Noto Sans KR',sans-serif;cursor:pointer;}
+
+/* DIAGNOSE */
+.dh{padding:8px 20px 20px;}
+.ptitle{font-family:'Playfair Display',serif;font-size:24px;color:var(--t1);margin-bottom:4px;}
+.psub{font-size:13px;color:var(--t3);}
+.uarea{margin:0 16px 20px;background:var(--white);border:2px dashed var(--rose-mid);border-radius:var(--r4);padding:44px 24px;text-align:center;cursor:pointer;transition:background .2s,border-color .2s;}
+.uarea:hover{background:var(--rose-light);border-color:var(--rose);}
+.uicon{font-size:48px;color:var(--rose-mid);margin-bottom:14px;display:block;}
+.uttl{font-size:16px;font-weight:600;color:var(--rose);margin-bottom:6px;}
+.usub{font-size:12px;color:var(--t3);line-height:1.5;}
+.fi{display:flex;align-items:flex-start;gap:12px;background:var(--white);border-radius:var(--r2);padding:14px;margin-bottom:8px;border:1px solid var(--border);box-shadow:var(--sh1);}
+.fib{width:36px;height:36px;border-radius:10px;background:var(--rose-light);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.fib i{font-size:18px;color:var(--rose);}
+.fitn{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.fis{font-size:11px;color:var(--t3);line-height:1.4;}
+.dbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:calc(100% - 32px);margin:4px 16px 0;background:linear-gradient(135deg,var(--rose),var(--rose-deep));color:#fff;border:none;border-radius:var(--r3);padding:16px;font-size:15px;font-weight:600;font-family:'Noto Sans KR',sans-serif;cursor:pointer;box-shadow:0 6px 20px rgba(200,69,106,.3);}
+.pnote{text-align:center;font-size:11px;color:var(--t3);margin:10px 16px 0;}
+#dloading{flex:1;display:none;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;}
+.spin{width:64px;height:64px;border:3px solid var(--rose-light);border-top-color:var(--rose);border-radius:50%;animation:sp .9s linear infinite;margin-bottom:24px;}
+@keyframes sp{to{transform:rotate(360deg)}}
+.lttl{font-size:16px;font-weight:600;color:var(--t1);margin-bottom:8px;text-align:center;}
+.lsub{font-size:12px;color:var(--t3);margin-bottom:20px;}
+.ptrack{width:200px;height:4px;background:var(--warm);border-radius:4px;overflow:hidden;}
+.pbar{height:100%;background:linear-gradient(90deg,var(--rose-mid),var(--rose));border-radius:4px;transition:width .6s ease;}
+.rhead{margin:0 16px 14px;background:linear-gradient(135deg,#C8456A,#8B2040);border-radius:var(--r4);padding:24px;text-align:center;color:#fff;}
+.rlbl{font-size:11px;opacity:.8;margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase;}
+.rname{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:4px;}
+.reng{font-size:13px;opacity:.8;margin-bottom:14px;}
+.rconf{display:inline-block;background:rgba(255,255,255,.2);font-size:12px;padding:4px 12px;border-radius:20px;}
+.psec{margin:0 16px 12px;background:var(--white);border-radius:var(--r3);padding:18px;border:1px solid var(--border);box-shadow:var(--sh1);}
+.pttl{font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+.psws{display:flex;gap:8px;margin-bottom:12px;}
+.psw{flex:1;height:40px;border-radius:10px;box-shadow:var(--sh1);}
+.pdesc{font-size:12px;color:var(--t2);line-height:1.6;}
+.sgrid{margin:0 16px 12px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.scard{background:var(--white);border-radius:var(--r2);padding:14px;border:1px solid var(--border);box-shadow:var(--sh1);text-align:center;}
+.stag{font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px;display:inline-block;margin-bottom:6px;}
+.sname{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.sdesc{font-size:11px;color:var(--t3);}
+.rcta{margin:0 16px 24px;display:flex;flex-direction:column;gap:8px;}
+
+/* SHOPS */
+.sbar{margin:0 16px 12px;display:flex;gap:8px;}
+.sinput{flex:1;background:var(--white);border:1px solid var(--border);border-radius:var(--r2);padding:12px 16px;font-size:14px;font-family:'Noto Sans KR',sans-serif;color:var(--t1);outline:none;}
+.sinput:focus{border-color:var(--rose);}
+.sbtn{width:46px;height:46px;background:var(--rose);border:none;border-radius:var(--r2);cursor:pointer;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.frow{display:flex;gap:8px;padding:0 16px;margin-bottom:16px;overflow-x:auto;}
+.frow::-webkit-scrollbar{display:none;}
+.fchip{display:inline-flex;align-items:center;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;border:1px solid var(--border);background:var(--white);color:var(--t2);cursor:pointer;white-space:nowrap;font-family:'Noto Sans KR',sans-serif;}
+.fchip.active{background:var(--rose);color:#fff;border-color:var(--rose);}
+.shcard{margin:0 16px 12px;background:var(--white);border-radius:var(--r3);overflow:hidden;border:1px solid var(--border);box-shadow:var(--sh1);cursor:pointer;transition:transform .15s,box-shadow .15s;}
+.shcard:hover{transform:translateY(-2px);box-shadow:var(--sh2);}
+.shthumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:40px;position:relative;}
+.shthumb.w{background:linear-gradient(135deg,#F5C4B3,#FAC775);}
+.shthumb.c{background:linear-gradient(135deg,#9FE1CB,#B5D4F4);}
+.shthumb.r{background:linear-gradient(135deg,#F4C0D1,#CECBF6);}
+.shbdg{position:absolute;top:10px;right:10px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:10px;}
+.shbody{padding:14px 16px;}
+.shn{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:4px;}
+.shrt{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--t3);margin-bottom:4px;}
+.stars{color:#F59E0B;}
+.shdist{font-size:12px;color:var(--t3);margin-bottom:10px;}
+.slrow{display:flex;gap:6px;flex-wrap:wrap;}
+.sl{background:var(--sage-light);color:var(--sage);border:none;border-radius:6px;padding:5px 10px;font-size:11px;font-weight:500;cursor:pointer;font-family:'Noto Sans KR',sans-serif;}
+.sl:hover,.sl.a{background:var(--sage);color:#fff;}
+.shprice{font-size:12px;color:var(--t3);margin-top:8px;}
+
+/* BOOKING */
+.bkheader{display:flex;align-items:center;gap:12px;padding:12px 16px 16px;}
+.bbtn{width:36px;height:36px;border-radius:10px;background:var(--white);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--t1);flex-shrink:0;}
+.bttl{font-size:17px;font-weight:600;color:var(--t1);}
+.sibanner{margin:0 16px 20px;background:var(--white);border-radius:var(--r3);padding:16px;border:1px solid var(--border);display:flex;align-items:center;gap:14px;box-shadow:var(--sh1);}
+.sithumb{width:50px;height:50px;border-radius:12px;background:linear-gradient(135deg,#F5C4B3,#FAC775);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.sin{font-size:15px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.sir{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--t3);}
+.bsec{margin:0 16px 20px;}
+.bsecttl{font-size:12px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.svgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.svcard{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r2);padding:12px 14px;cursor:pointer;transition:all .15s;}
+.svcard.sel{border-color:var(--rose);background:var(--rose-light);}
+.svcard.sel .svn{color:var(--rose);}
+.svcard.sel .svp{color:var(--rose-deep);}
+.svn{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.svp{font-size:12px;color:var(--t3);}
+.slgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.bsl{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r1);padding:8px 4px;text-align:center;cursor:pointer;font-size:12px;font-weight:500;color:var(--t2);font-family:'Noto Sans KR',sans-serif;transition:all .15s;}
+.bsl.sel{border-color:var(--sage);background:var(--sage-light);color:var(--sage);}
+.cfcard{margin:0 16px;background:var(--white);border-radius:var(--r3);padding:18px;border:1px solid var(--border);box-shadow:var(--sh1);}
+.crow{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--warm);}
+.crow:last-child{border-bottom:none;}
+.clbl{font-size:13px;color:var(--t3);}
+.cval{font-size:13px;font-weight:600;color:var(--t1);}
+.cprice{color:var(--rose);font-size:15px;}
+.bkacts{padding:16px;display:flex;flex-direction:column;gap:8px;}
+.cnote{text-align:center;font-size:11px;color:var(--t3);margin-top:4px;}
+
+/* MYPAGE */
+.phead{margin:0 16px 20px;background:var(--white);border-radius:var(--r4);padding:24px;border:1px solid var(--border);display:flex;align-items:center;gap:16px;box-shadow:var(--sh1);}
+.pavt{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--rose-mid),var(--rose));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:#fff;flex-shrink:0;}
+.pname{font-size:18px;font-weight:600;color:var(--t1);margin-bottom:3px;}
+.pemail{font-size:12px;color:var(--t3);margin-bottom:8px;}
+.ptone{display:inline-flex;align-items:center;gap:5px;background:var(--rose-light);color:var(--rose);font-size:12px;font-weight:500;padding:4px 10px;border-radius:12px;}
+.strow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:0 16px 20px;}
+.stcard{background:var(--white);border-radius:var(--r2);padding:14px 10px;text-align:center;border:1px solid var(--border);box-shadow:var(--sh1);}
+.stnum{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;margin-bottom:3px;}
+.stlbl{font-size:11px;color:var(--t3);}
+.hcard{margin:0 16px 8px;background:var(--white);border-radius:var(--r2);padding:14px;border:1px solid var(--border);display:flex;align-items:center;gap:12px;box-shadow:var(--sh1);}
+.hico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.hn{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:2px;}
+.hd{font-size:12px;color:var(--t3);}
+.hrv{font-size:11px;color:var(--rose);cursor:pointer;margin-top:4px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t1);color:#fff;padding:12px 24px;border-radius:30px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:all .3s;z-index:999;white-space:nowrap;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+@media(min-width:430px){body{padding:24px;align-items:flex-start;}.shell{border-radius:40px;min-height:auto;}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- HOME -->
+<div class="screen active" id="s-home">
+  <div class="sb"><span>9:41</span><span style="display:flex;gap:6px;"><i class="ti ti-wifi" style="font-size:14px;"></i><i class="ti ti-battery" style="font-size:14px;"></i></span></div>
+  <div class="sc">
+    <div class="hh">
+      <div class="greet">안녕하세요, <strong>소영님</strong> 👋</div>
+      <div class="htitle">오늘의<br>나다운 스타일을</div>
+    </div>
+    <div class="hero" onclick="goTo('s-diagnose')">
+      <div class="htag">✨ AI 퍼스널컬러 진단</div>
+      <div class="hhead">셀카 한 장으로<br>내 컬러 찾기</div>
+      <div class="hsub">30초 AI 분석 · RGB 데이터 기반<br>맞춤 샵 즉시 예약 연결</div>
+      <button class="hbtn" onclick="event.stopPropagation();goTo('s-diagnose')">무료 진단 시작 <i class="ti ti-arrow-right" style="font-size:13px;"></i></button>
+    </div>
+    <div class="sec">
+      <div class="sec-ttl">최근 예약</div>
+      <div class="bkcard">
+        <div class="savt">✂️</div>
+        <div style="flex:1;"><div class="bkn">블루밍 헤어 강남점</div><div class="bkd">5월 24일 오후 2시 · 뿌리 염색</div></div>
+        <div class="pill" style="background:var(--sage-light);color:var(--sage);">예약완료</div>
+      </div>
+    </div>
+    <div class="sec">
+      <div class="sec-ttl">내 진단 결과</div>
+      <div class="tcard">
+        <div class="tr">
+          <div class="tbadge"><i class="ti ti-snowflake" style="font-size:13px;"></i> 여름 쿨톤</div>
+          <div class="tdate">2026.04.12</div>
+        </div>
+        <div class="prow">
+          <div class="sw" style="background:#B0C4DE;"></div>
+          <div class="sw" style="background:#9B59B6;"></div>
+          <div class="sw" style="background:#E8D5E8;"></div>
+          <div class="sw" style="background:#708090;"></div>
+          <div class="sw" style="background:#C0C0C0;"></div>
+          <div class="sw" style="background:#7B9FC4;"></div>
+        </div>
+        <button class="tacbtn" onclick="goTo('s-shops')">맞춤 샵 보기 →</button>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+  <div class="bn">
+    <button class="nb active" onclick="goTo('s-home')"><i class="ti ti-home"></i>홈</button>
+    <button class="nb" onclick="goTo('s-diagnose')"><i class="ti ti-camera"></i>진단</button>
+    <button class="nb" onclick="goTo('s-shops')"><i class="ti ti-search"></i>샵 찾기</button>
+    <button class="nb" onclick="goTo('s-mypage')"><i class="ti ti-user"></i>마이</button>
+  </div>
+</div>
+
+<!-- DIAGNOSE -->
+<div class="screen" id="s-diagnose">
+  <div class="sb"><span>9:41</span><span style="display:flex;gap:6px;"><i class="ti ti-wifi" style="font-size:14px;"></i><i class="ti ti-battery" style="font-size:14px;"></i></span></div>
+  <div id="d-step1" style="display:flex;flex-direction:column;flex:1;">
+    <div class="sc">
+      <div class="dh"><div class="ptitle">AI 진단</div><div class="psub">셀카 한 장으로 내 퍼스널컬러를 찾아요</div></div>
+      <div class="uarea" onclick="startAnalysis()">
+        <i class="ti ti-camera uicon"></i>
+        <div class="uttl">사진 업로드 또는 촬영</div>
+        <div class="usub">자연광에서 찍은 사진이<br>가장 정확해요</div>
+      </div>
+      <div class="sec">
+        <div class="sec-ttl">진단 항목</div>
+        <div class="fi"><div class="fib"><i class="ti ti-palette"></i></div><div><div class="fitn">RGB 피부톤 분석</div><div class="fis">언더톤을 수치로 추출해 12가지 톤 정밀 분류</div></div></div>
+        <div class="fi"><div class="fib"><i class="ti ti-face-id"></i></div><div><div class="fitn">얼굴형 인식</div><div class="fis">어울리는 헤어·메이크업 스타일 자동 추천</div></div></div>
+        <div class="fi"><div class="fib"><i class="ti ti-sparkles"></i></div><div><div class="fitn">맞춤 샵 즉시 매칭</div><div class="fis">진단 결과 기반 상위 샵 바로 예약 연결</div></div></div>
+      </div>
+      <button class="dbtn" onclick="startAnalysis()"><i class="ti ti-camera" style="font-size:18px;"></i> 지금 진단하기 (무료)</button>
+      <div class="pnote">업로드된 사진은 분석 후 즉시 삭제됩니다</div>
+      <div style="height:24px;"></div>
+    </div>
+  </div>
+  <div id="dloading">
+    <div class="spin"></div>
+    <div class="lttl" id="ltxt">AI가 피부톤을 분석하고 있어요...</div>
+    <div class="lsub" id="lstp">RGB 언더톤 추출 중</div>
+    <div class="ptrack"><div class="pbar" id="pbar" style="width:0%"></div></div>
+  </div>
+  <div id="d-result" class="sc" style="display:none;">
+    <div style="padding:8px 0 0;"></div>
+    <div style="text-align:center;padding:8px 16px 14px;font-size:12px;color:var(--t3);">진단 완료 ✓</div>
+    <div class="rhead">
+      <div class="rlbl">YOUR PERSONAL COLOR</div>
+      <div class="rname">여름 쿨톤</div>
+      <div class="reng">Summer Cool</div>
+      <div class="rconf">신뢰도 <strong>92%</strong></div>
+    </div>
+    <div style="height:12px;"></div>
+    <div class="psec">
+      <div class="pttl">나의 컬러 팔레트</div>
+      <div class="psws">
+        <div class="psw" style="background:#B0C4DE;"></div>
+        <div class="psw" style="background:#9B59B6;"></div>
+        <div class="psw" style="background:#E8D5E8;"></div>
+        <div class="psw" style="background:#708090;"></div>
+        <div class="psw" style="background:#7B9FC4;"></div>
+      </div>
+      <div class="pdesc">차갑고 부드러운 색조가 잘 어울립니다. 라벤더, 파우더 블루, 소프트 로즈 계열을 추천해요.</div>
+    </div>
+    <div class="sgrid">
+      <div class="scard"><div class="stag" style="background:var(--rose-light);color:var(--rose);">헤어</div><div class="sname">애쉬 블론드</div><div class="sdesc">차가운 색조</div></div>
+      <div class="scard"><div class="stag" style="background:var(--sage-light);color:var(--sage);">메이크업</div><div class="sname">로즈 핑크 립</div><div class="sdesc">블루베이스</div></div>
+      <div class="scard"><div class="stag" style="background:#EEF2FF;color:#4F46E5;">패션</div><div class="sname">라벤더 계열</div><div class="sdesc">소프트 쿨톤</div></div>
+      <div class="scard"><div class="stag" style="background:#F5F3FF;color:#7C3AED;">액세서리</div><div class="sname">실버 계열</div><div class="sdesc">화이트 골드</div></div>
+    </div>
+    <div class="rcta">
+      <button class="btn-p" onclick="goTo('s-shops')"><i class="ti ti-search" style="font-size:16px;"></i> 맞춤 샵 바로 찾기</button>
+      <button class="btn-o" onclick="resetD()">다시 진단하기</button>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+  <div class="bn">
+    <button class="nb" onclick="goTo('s-home')"><i class="ti ti-home"></i>홈</button>
+    <button class="nb active"><i class="ti ti-camera"></i>진단</button>
+    <button class="nb" onclick="goTo('s-shops')"><i class="ti ti-search"></i>샵 찾기</button>
+    <button class="nb" onclick="goTo('s-mypage')"><i class="ti ti-user"></i>마이</button>
+  </div>
+</div>
+
+<!-- SHOPS -->
+<div class="screen" id="s-shops">
+  <div class="sb"><span>9:41</span><span style="display:flex;gap:6px;"><i class="ti ti-wifi" style="font-size:14px;"></i><i class="ti ti-battery" style="font-size:14px;"></i></span></div>
+  <div class="sc">
+    <div class="dh"><div class="ptitle">샵 찾기</div><div class="psub">여름 쿨톤 기반 맞춤 추천</div></div>
+    <div class="sbar">
+      <input class="sinput" placeholder="지역, 샵 이름 검색..." value="강남">
+      <button class="sbtn"><i class="ti ti-search"></i></button>
+    </div>
+    <div class="frow">
+      <button class="fchip active">전체</button>
+      <button class="fchip">헤어</button>
+      <button class="fchip">메이크업</button>
+      <button class="fchip">네일</button>
+      <button class="fchip">거리순</button>
+      <button class="fchip">평점순</button>
+    </div>
+    <div class="shcard" onclick="goTo('s-booking')">
+      <div class="shthumb w">✂️<div class="shbdg" style="background:var(--sage-light);color:var(--sage);">쿨톤 전문</div></div>
+      <div class="shbody">
+        <div class="shn">블루밍 헤어 강남점</div>
+        <div class="shrt"><span class="stars">★★★★★</span> 4.9 <span style="color:var(--t3);">(238)</span></div>
+        <div class="shdist"><i class="ti ti-map-pin" style="font-size:12px;"></i> 강남역 3번 출구 · 380m</div>
+        <div class="slrow">
+          <button class="sl" onclick="event.stopPropagation();this.classList.toggle('a')">오늘 2pm</button>
+          <button class="sl" onclick="event.stopPropagation();this.classList.toggle('a')">오늘 4pm</button>
+          <button class="sl" onclick="event.stopPropagation();this.classList.toggle('a')">내일 11am</button>
+        </div>
+        <div class="shprice">애쉬톤 컬러 전문 · 뿌리염색 35,000원~</div>
+      </div>
+    </div>
+    <div class="shcard" onclick="goTo('s-booking')">
+      <div class="shthumb c">💄<div class="shbdg" style="background:var(--rose-light);color:var(--rose);">퍼스널컬러</div></div>
+      <div class="shbody">
+        <div class="shn">글로우 메이크업 스튜디오</div>
+        <div class="shrt"><span class="stars">★★★★★</span> 4.8 <span style="color:var(--t3);">(156)</span></div>
+        <div class="shdist"><i class="ti ti-map-pin" style="font-size:12px;"></i> 신논현역 · 650m</div>
+        <div class="slrow">
+          <button class="sl" onclick="event.stopPropagation();this.classList.toggle('a')">내일 10am</button>
+          <button class="sl" onclick="event.stopPropagation();this.classList.toggle('a')">내일 2pm</button>
+        </div>
+        <div class="shprice">1:1 컬러 메이크업 레슨 · 50,000원~</div>
+      </div>
+    </div>
+    <div class="shcard" onclick="goTo('s-booking')">
+      <div class="shthumb r">💅<div class="shbdg" style="background:#FAEEDA;color:#854F0B;">신규입점</div></div>
+      <div class="shbody">
+        <div class="shn">라벨 헤어 &amp; 뷰티</div>
+        <div class="shrt"><span class="stars">★★★★☆</span> 4.7 <span style="color:var(--t3);">(89)</span></div>
+        <div class="shdist"><i class="ti ti-map-pin" style="font-size:12px;"></i> 강남역 7번 출구 · 1.1km</div>
+        <div class="slrow">
+          <button class="sl" onclick="event.stopPropagation();this.classList.toggle('a')">오늘 5pm</button>
+          <button class="sl" onclick="event.stopPropagation();this.classList.toggle('a')">내일 3pm</button>
+          <button class="sl" onclick="event.stopPropagation();this.classList.toggle('a')">내일 5pm</button>
+        </div>
+        <div class="shprice">쿨톤 염색 특화 · 전체염색 70,000원~</div>
+      </div>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+  <div class="bn">
+    <button class="nb" onclick="goTo('s-home')"><i class="ti ti-home"></i>홈</button>
+    <button class="nb" onclick="goTo('s-diagnose')"><i class="ti ti-camera"></i>진단</button>
+    <button class="nb active"><i class="ti ti-search"></i>샵 찾기</button>
+    <button class="nb" onclick="goTo('s-mypage')"><i class="ti ti-user"></i>마이</button>
+  </div>
+</div>
+
+<!-- BOOKING -->
+<div class="screen" id="s-booking">
+  <div class="sb"><span>9:41</span><span style="display:flex;gap:6px;"><i class="ti ti-wifi" style="font-size:14px;"></i><i class="ti ti-battery" style="font-size:14px;"></i></span></div>
+  <div class="sc">
+    <div class="bkheader">
+      <button class="bbtn" onclick="goTo('s-shops')"><i class="ti ti-arrow-left"></i></button>
+      <div class="bttl">예약하기</div>
+    </div>
+    <div class="sibanner">
+      <div class="sithumb">✂️</div>
+      <div><div class="sin">블루밍 헤어 강남점</div><div class="sir"><span class="stars">★★★★★</span> 4.9 · 강남역 380m</div></div>
+    </div>
+    <div class="bsec">
+      <div class="bsecttl">시술 선택</div>
+      <div class="svgrid" id="svgrid">
+        <div class="svcard sel" onclick="selSvc(this,'뿌리 염색','35,000원~')"><div class="svn">뿌리 염색</div><div class="svp">35,000원~</div></div>
+        <div class="svcard" onclick="selSvc(this,'전체 염색','70,000원~')"><div class="svn">전체 염색</div><div class="svp">70,000원~</div></div>
+        <div class="svcard" onclick="selSvc(this,'커트','25,000원~')"><div class="svn">커트</div><div class="svp">25,000원~</div></div>
+        <div class="svcard" onclick="selSvc(this,'펌','90,000원~')"><div class="svn">펌</div><div class="svp">90,000원~</div></div>
+      </div>
+    </div>
+    <div class="bsec">
+      <div class="bsecttl">날짜 및 시간</div>
+      <div class="slgrid" id="slgrid">
+        <button class="bsl sel" onclick="selSlot(this,'5월 24일 오후 2시')">오늘 2pm</button>
+        <button class="bsl" onclick="selSlot(this,'5월 24일 오후 4시')">오늘 4pm</button>
+        <button class="bsl" onclick="selSlot(this,'5월 25일 오전 11시')">내일 11am</button>
+        <button class="bsl" onclick="selSlot(this,'5월 25일 오후 2시')">내일 2pm</button>
+        <button class="bsl" onclick="selSlot(this,'5월 25일 오후 4시')">내일 4pm</button>
+        <button class="bsl" onclick="selSlot(this,'5월 26일 오전 10시')">26일 10am</button>
+      </div>
+    </div>
+    <div class="bsec">
+      <div class="bsecttl">예약 확인</div>
+      <div class="cfcard">
+        <div class="crow"><span class="clbl">샵</span><span class="cval">블루밍 헤어 강남점</span></div>
+        <div class="crow"><span class="clbl">시술</span><span class="cval" id="cv-svc">뿌리 염색</span></div>
+        <div class="crow"><span class="clbl">일시</span><span class="cval" id="cv-slot">5월 24일 오후 2시</span></div>
+        <div class="crow"><span class="clbl">예상 금액</span><span class="cval cprice" id="cv-price">35,000원~</span></div>
+      </div>
+    </div>
+    <div style="height:8px;"></div>
+  </div>
+  <div class="bkacts">
+    <button class="btn-p" onclick="confirmBk()"><i class="ti ti-check" style="font-size:16px;"></i> 예약 확정하기</button>
+    <div class="cnote">예약 24시간 전 무료 취소 가능</div>
+  </div>
+</div>
+
+<!-- MYPAGE -->
+<div class="screen" id="s-mypage">
+  <div class="sb"><span>9:41</span><span style="display:flex;gap:6px;"><i class="ti ti-wifi" style="font-size:14px;"></i><i class="ti ti-battery" style="font-size:14px;"></i></span></div>
+  <div class="sc">
+    <div class="dh"><div class="ptitle">마이페이지</div></div>
+    <div class="phead">
+      <div class="pavt">소</div>
+      <div>
+        <div class="pname">손소영님</div>
+        <div class="pemail">son@email.com</div>
+        <div class="ptone"><i class="ti ti-snowflake" style="font-size:12px;"></i> 여름 쿨톤</div>
+      </div>
+    </div>
+    <div class="strow">
+      <div class="stcard"><div class="stnum" style="color:var(--rose);">3</div><div class="stlbl">총 예약</div></div>
+      <div class="stcard"><div class="stnum" style="color:var(--sage);">1</div><div class="stlbl">진단 횟수</div></div>
+      <div class="stcard"><div class="stnum" style="color:#7C3AED;">2</div><div class="stlbl">즐겨찾기</div></div>
+    </div>
+    <div class="sec">
+      <div class="sec-ttl">예약 내역</div>
+      <div class="hcard">
+        <div class="hico" style="background:linear-gradient(135deg,#F5C4B3,#FAC775);">✂️</div>
+        <div style="flex:1;"><div class="hn">블루밍 헤어 강남점</div><div class="hd">5월 24일 오후 2시 · 뿌리 염색</div></div>
+        <div class="pill" style="background:var(--sage-light);color:var(--sage);">예약완료</div>
+      </div>
+      <div class="hcard" style="margin-top:8px;">
+        <div class="hico" style="background:linear-gradient(135deg,#9FE1CB,#B5D4F4);">💄</div>
+        <div style="flex:1;"><div class="hn">글로우 메이크업 스튜디오</div><div class="hd">5월 10일 · 1:1 컬러 레슨</div><div class="hrv">리뷰 작성하기 →</div></div>
+        <div class="pill" style="background:var(--warm);color:var(--t3);">이용완료</div>
+      </div>
+    </div>
+    <div class="sec">
+      <button class="btn-o" onclick="goTo('s-diagnose')"><i class="ti ti-camera" style="font-size:15px;"></i> 다시 진단하기</button>
+    </div>
+    <div style="height:16px;"></div>
+  </div>
+  <div class="bn">
+    <button class="nb" onclick="goTo('s-home')"><i class="ti ti-home"></i>홈</button>
+    <button class="nb" onclick="goTo('s-diagnose')"><i class="ti ti-camera"></i>진단</button>
+    <button class="nb" onclick="goTo('s-shops')"><i class="ti ti-search"></i>샵 찾기</button>
+    <button class="nb active"><i class="ti ti-user"></i>마이</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if(id==='s-diagnose') resetD();
+}
+function resetD(){
+  document.getElementById('d-step1').style.display='flex';
+  document.getElementById('dloading').style.display='none';
+  document.getElementById('d-result').style.display='none';
+}
+function startAnalysis(){
+  document.getElementById('d-step1').style.display='none';
+  const dl=document.getElementById('dloading');
+  dl.style.display='flex';
+  const steps=[
+    {t:'AI가 피부톤을 분석하고 있어요...',s:'RGB 언더톤 추출 중',p:20},
+    {t:'얼굴 윤곽을 인식하고 있어요...',s:'얼굴형 분석 중',p:45},
+    {t:'12가지 톤 중 매칭하고 있어요...',s:'여름/겨울 쿨톤 비교 중',p:70},
+    {t:'맞춤 스타일을 추천하고 있어요...',s:'컬러 팔레트 생성 중',p:90},
+    {t:'진단 완료!',s:'결과 불러오는 중...',p:100},
+  ];
+  let i=0;
+  function nx(){
+    if(i>=steps.length){
+      setTimeout(()=>{dl.style.display='none';document.getElementById('d-result').style.display='block';},400);
+      return;
+    }
+    document.getElementById('ltxt').textContent=steps[i].t;
+    document.getElementById('lstp').textContent=steps[i].s;
+    document.getElementById('pbar').style.width=steps[i].p+'%';
+    i++;setTimeout(nx,900);
+  }nx();
+}
+function selSvc(el,n,p){
+  document.querySelectorAll('#svgrid .svcard').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('cv-svc').textContent=n;
+  document.getElementById('cv-price').textContent=p;
+}
+function selSlot(el,v){
+  document.querySelectorAll('#slgrid .bsl').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('cv-slot').textContent=v;
+}
+function confirmBk(){
+  goTo('s-home');
+  setTimeout(()=>showToast('예약이 완료되었어요! 🎉'),300);
+}
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+document.querySelectorAll('.fchip').forEach(c=>{
+  c.addEventListener('click',function(){
+    document.querySelectorAll('.fchip').forEach(x=>x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+</body>
+</html>

@@ -1,6 +1,6 @@
-# StyleMatch
+# ToneOnMatch
 
-StyleMatch is an AI-assisted personal color and fashion matching web application designed to help users discover styling recommendations based on visual analysis and seasonal tone concepts.
+ToneOnMatch is an AI-assisted personal color and fashion matching web application designed to help users discover styling recommendations based on visual analysis and seasonal tone concepts.
 
 ## Features
 

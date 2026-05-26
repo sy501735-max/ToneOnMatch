@@ -1,28 +1,38 @@
-# Hi, I'm Young 👋
+# StyleMatch
 
-Frontend developer building AI-powered style and personalization tools.
+StyleMatch is an AI-assisted personal color and fashion matching web application designed to help users discover styling recommendations based on visual analysis and seasonal tone concepts.
 
-## Current Projects
+## Features
 
-* StyleMatch — AI-based personal color & fashion matching web app
-* UI/UX experiments for creator-focused AI tools
-* Open-source frontend utilities and automation workflows
+* Personal color analysis
+* Fashion tone matching
+* Responsive web UI
+* AI-assisted recommendation workflow
+* Simple and accessible frontend experience
+
+## Live Demo
+
+https://eloquent-valkyrie-360c99.netlify.app
 
 ## Tech Stack
 
-* HTML / CSS / JavaScript
-* Netlify
-* AI-assisted workflows
-* Responsive UI design
+* HTML
+* CSS
+* JavaScript
+* Netlify Deployment
 
-## Focus Areas
+## Vision
 
-* AI styling tools
-* Personal color analysis
-* Creator productivity
-* Web-based automation
+StyleMatch aims to make personal styling and color analysis more accessible through lightweight AI-powered web experiences.
 
-## Links
+## Roadmap
 
-* Portfolio / Demo: https://eloquent-valkyrie-360c99.netlify.app
-* GitHub: https://github.com/sy501735-max
+* Improved AI recommendation engine
+* User upload system
+* Saved style profiles
+* Mobile optimization
+* Multi-language support
+
+## Contributing
+
+Pull requests and suggestions are welcome.

@@ -23,7 +23,7 @@ https://eloquent-valkyrie-360c99.netlify.app
 
 ## Vision
 
-StyleMatch aims to make personal styling and color analysis more accessible through lightweight AI-powered web experiences.
+ToneOnMatch aims to make personal styling and color analysis more accessible through lightweight AI-powered web experiences.
 
 ## Roadmap
 

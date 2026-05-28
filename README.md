@@ -1,38 +1,62 @@
 # ToneOnMatch
 
-ToneOnMatch is an AI-assisted personal color and fashion matching web application designed to help users discover styling recommendations based on visual analysis and seasonal tone concepts.
+AI-powered personal color and fashion matching platform designed for creators, stylists, and modern personalization workflows.
+
+## Overview
+
+ToneOnMatch explores AI-assisted personalization systems for fashion, styling, and visual identity workflows.
+
+The project focuses on combining:
+
+* personal color analysis
+* creator-focused styling workflows
+* AI-generated recommendations
+* automation-assisted personalization systems
 
 ## Features
 
-* Personal color analysis
-* Fashion tone matching
-* Responsive web UI
-* AI-assisted recommendation workflow
-* Simple and accessible frontend experience
+* Personal color analysis workflows
+* AI-assisted styling suggestions
+* Fashion and color matching concepts
+* Creator-oriented personalization tools
+* Visual branding workflow experiments
 
-## Live Demo
+## Use Cases
 
-https://eloquent-valkyrie-360c99.netlify.app
+* Creator styling workflows
+* Fashion personalization
+* Content creator branding
+* AI-assisted recommendation systems
+* Beauty & fashion workflow automation
+
+## Website
+
+https://toneonmatch.com/
 
 ## Tech Stack
 
 * HTML
 * CSS
 * JavaScript
-* Netlify Deployment
+* Netlify
+* AI-assisted workflows
+* Claude/OpenAI experimentation
 
-## Vision
+## Project Goals
 
-ToneOnMatch aims to make personal styling and color analysis more accessible through lightweight AI-powered web experiences.
+ToneOnMatch aims to explore practical AI personalization experiences and creator-focused workflow systems.
 
-## Roadmap
+The project is currently evolving as part of ongoing experiments in:
 
-* Improved AI recommendation engine
-* User upload system
-* Saved style profiles
-* Mobile optimization
-* Multi-language support
+* AI personalization
+* workflow automation
+* creator productivity tools
+* recommendation systems
 
-## Contributing
+## Status
 
-Pull requests and suggestions are welcome.
+Currently in active development.
+
+## License
+
+MIT

@@ -54,3 +54,10 @@ Currently in active development.
 ## License
 
 MIT
+
+## Upcoming Experiments
+
+- Beauty recommendation workflows
+- Personalization scoring systems
+- AI-assisted styling improvements
+- Creator-focused fashion recommendations

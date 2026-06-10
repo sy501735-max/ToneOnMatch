@@ -1,0 +1,1524 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ToneOnMatch | 내 분위기 유형</title>
+  <!-- OG / SNS 공유 메타태그 -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ToneOnMatch | AI 분위기 분석">
+  <meta property="og:description" content="셀카 한 장을 업로드하면 AI가 내 첫인상 유형을 분석해드려요.">
+  <meta property="og:url" content="https://toneonmatch.com/index.html">
+  <meta property="og:image" content="https://toneonmatch.com/og_image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="ToneOnMatch">
+  <!-- 트위터 카드 -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ToneOnMatch | AI 분위기 분석">
+  <meta name="twitter:description" content="셀카 한 장을 업로드하면 AI가 내 첫인상 유형을 분석해드려요.">
+  <meta name="twitter:image" content="https://toneonmatch.com/og_image.jpg">
+  <!-- 검색엔진 -->
+  <meta name="description" content="셀카 한 장을 업로드하면 AI가 내 첫인상 유형을 분석해드려요.">
+  <link rel="canonical" href="https://toneonmatch.com/index.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #03040a;
+  --bg2: #07091a;
+  --surface: rgba(10,12,22,0.95);
+  --surface2: rgba(18,22,38,0.7);
+  --border: rgba(255,255,255,0.06);
+  --border-hi: rgba(129,140,248,0.3);
+  --text: #f0f2ff;
+  --muted: #8892b0;
+  --dim: #4a5568;
+  --primary: #818cf8;
+  --primary2: #6366f1;
+  --rose: #e8a598;
+  --gold: #c9a96e;
+  --teal: #7dd3c8;
+  --r: 14px;
+  --r2: 24px;
+  --tab-h: 64px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--bg);-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Noto Sans KR',sans-serif;
+  color:var(--text);min-height:100vh;overflow-x:hidden;
+  background:
+    radial-gradient(ellipse 80% 50% at 5% -5%, rgba(99,102,241,0.2), transparent),
+    radial-gradient(ellipse 60% 40% at 95% 10%, rgba(232,165,152,0.1), transparent),
+    #03040a;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+
+/* ── APP SHELL ── */
+.app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;position:relative;overflow:hidden}
+
+/* ── PAGE SYSTEM ── */
+.page{display:none;flex-direction:column;flex:1;animation:fadeUp 0.3s ease forwards}
+.page.active{display:flex}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── TOPBAR ── */
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:24px 20px 14px;position:relative;z-index:200;
+}
+.topbar-logo{display:flex;flex-direction:column;gap:2px}
+.topbar-logo-main{display:flex;align-items:center;gap:7px;font-size:18px;font-weight:900;color:var(--text)}
+.topbar-logo-dot{width:7px;height:7px;border-radius:50%;background:var(--primary);box-shadow:0 0 8px rgba(129,140,248,0.8);animation:breathe 2.4s ease infinite}
+@keyframes breathe{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.6)}}
+.logo-match{color:var(--primary)}
+.topbar-logo-sub{font-size:10px;color:var(--muted);padding-left:14px;letter-spacing:0.3px}
+.topbar-action{width:34px;height:34px;border-radius:50%;background:transparent;border:none;display:flex;align-items:center;justify-content:center;font-size:15px;cursor:pointer;color:var(--muted)}
+
+/* ── PAGE CONTENT ── */
+.page-content{flex:1;overflow-y:auto;padding-bottom:calc(var(--tab-h) + 16px);-webkit-overflow-scrolling:touch}
+.page-content::-webkit-scrollbar{display:none}
+
+/* ── BACK BTN ── */
+.back-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:none;color:var(--muted);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;padding:0;margin-bottom:14px;transition:color 0.2s}
+.back-btn:hover{color:var(--text)}
+
+/* ── TYPOGRAPHY ── */
+.eyebrow{font-size:10px;font-weight:900;letter-spacing:3px;color:var(--primary);text-transform:uppercase;margin-bottom:8px;display:block}
+.h1{font-size:clamp(22px,5.5vw,28px);line-height:1.4;font-weight:700}
+.h1 em{color:var(--primary);font-style:normal;font-weight:900}
+.h2{font-size:19px;font-weight:900;line-height:1.3}
+.caption{color:var(--muted);font-size:13px;line-height:1.8}
+.serif { font-family: 'Noto Sans KR', sans-serif; }
+.bebas { font-family: 'Noto Sans KR', sans-serif; font-weight: 900; letter-spacing: 2px; }
+
+/* ── MAIN BTN ── */
+.btn{width:100%;padding:16px;border-radius:var(--r);font-size:14px;font-weight:900;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;cursor:pointer;border:none}
+.btn-primary{background:linear-gradient(135deg,#818cf8,#4f46e5);color:#fff;box-shadow:0 8px 24px rgba(99,102,241,0.3)}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(99,102,241,0.4)}
+.btn-primary:disabled{opacity:0.3;cursor:not-allowed;transform:none}
+.btn-outline{background:transparent;color:var(--muted);border:1px solid var(--border-hi);margin-top:10px}
+.btn-gold{background:linear-gradient(135deg,#c9a96e,#e8a598);color:#111827;font-size:15px;font-weight:900;box-shadow:0 8px 24px rgba(201,169,110,0.25)}
+.btn-gold:hover{transform:translateY(-1px);box-shadow:0 12px 32px rgba(201,169,110,0.35)}
+.px20{padding:0 20px}
+
+/* ══════════════════════════════
+   HOME PAGE
+══════════════════════════════ */
+#page-home{background:none}
+
+/* HERO CARD */
+.hero-card-inner{
+  margin:0 16px 18px;border-radius:26px;
+  border:1px solid rgba(129,140,248,0.2);
+  background:linear-gradient(145deg, rgba(12,15,32,0.9) 0%, rgba(25,18,50,0.7) 100%);
+  backdrop-filter:blur(12px);overflow:hidden;position:relative;
+  padding:20px 22px 26px;
+}
+.hero-card-inner::before{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 80% 60% at 100% 0%, rgba(99,102,241,0.18), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 0% 100%, rgba(232,165,152,0.10), transparent 60%);
+}
+.hero-card-inner>*{position:relative;z-index:1}
+.home-greeting{font-size:12px;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.home-greeting-dot{width:5px;height:5px;border-radius:50%;background:var(--primary);animation:breathe 2s ease infinite}
+
+/* UPLOAD */
+.upload-zone-home{
+  margin:0 16px 16px;border:1.5px dashed rgba(129,140,248,0.35);border-radius:var(--r2);
+  background:rgba(99,102,241,0.03);padding:32px 20px;
+  text-align:center;cursor:pointer;transition:all 0.25s;position:relative;overflow:hidden;
+}
+.upload-zone-home:hover,.upload-zone-home.dragover{border-color:rgba(129,140,248,0.65);background:rgba(99,102,241,0.07)}
+.upload-zone-home.has-image{border-style:solid;border-color:rgba(129,140,248,0.5);padding:0}
+#home-preview{width:100%;height:220px;object-fit:cover;border-radius:calc(var(--r2) - 2px);display:none}
+.upload-icon{font-size:36px;margin-bottom:12px}
+.upload-title{font-size:15px;font-weight:800;margin-bottom:6px}
+.upload-hint{font-size:11px;color:var(--muted);margin-bottom:16px}
+.upload-badge{display:inline-block;background:linear-gradient(135deg,#818cf8,#4f46e5);color:#fff;font-size:11px;font-weight:900;letter-spacing:2px;padding:6px 24px;border-radius:50px;box-shadow:0 4px 14px rgba(99,102,241,0.35)}
+
+/* HOME QUICK VIBE — 기획: Mood 메인화 */
+.home-section-label{font-size:11px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+.home-vibe-section{padding:0 16px 16px}
+.home-vibe-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.home-vibe-btn{
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:14px 12px;cursor:pointer;
+  text-align:left;font-family:inherit;transition:all 0.2s;display:flex;flex-direction:column;gap:3px;
+}
+.home-vibe-btn:active{transform:scale(0.97)}
+.home-vibe-btn.mood-type-btn{border-color:rgba(129,140,248,0.2)}
+.home-vibe-btn.mood-type-btn:hover{border-color:rgba(129,140,248,0.45);background:rgba(99,102,241,0.08)}
+.home-vibe-btn.gold-btn{border-color:rgba(201,169,110,0.3);background:rgba(201,169,110,0.04)}
+.home-vibe-btn.gold-btn:hover{border-color:rgba(201,169,110,0.55);background:rgba(201,169,110,0.08)}
+.home-vibe-title{font-size:13px;font-weight:900;color:var(--text)}
+.home-vibe-sub{font-size:10px;color:var(--muted)}
+.home-divider{display:flex;align-items:center;gap:10px;margin:6px 0 12px}
+.home-divider::before,.home-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.home-divider span{font-size:11px;color:var(--dim);white-space:nowrap}
+.home-status-btn{width:100%;padding:12px;background:transparent;border:1px solid var(--border);border-radius:var(--r);color:var(--muted);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:all 0.2s}
+.home-status-btn:hover{border-color:var(--border-hi);color:var(--text)}
+
+/* ══════════════════════════════
+   ANALYZING PAGE
+══════════════════════════════ */
+#page-analyzing{align-items:center;justify-content:center;text-align:center;min-height:100vh;padding:40px 24px}
+.analyze-orb{width:110px;height:110px;border-radius:50%;margin:0 auto 32px;background:radial-gradient(circle,rgba(99,102,241,0.15),transparent 70%);position:relative;display:flex;align-items:center;justify-content:center}
+.analyze-ring{position:absolute;inset:-3px;border-radius:50%;border:1.5px solid transparent;border-top-color:var(--primary);animation:spin 1.4s linear infinite}
+.analyze-ring2{position:absolute;inset:-10px;border-radius:50%;border:1px solid transparent;border-top-color:rgba(129,140,248,0.3);animation:spin 2.2s linear infinite reverse}
+.analyze-ring3{position:absolute;inset:-18px;border-radius:50%;border:1px solid transparent;border-top-color:rgba(99,102,241,0.12);animation:spin 3s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.analyze-icon{font-size:38px}
+.analyze-steps{width:100%;max-width:300px;margin:28px auto 0;display:flex;flex-direction:column;gap:7px}
+.astep{display:flex;align-items:center;gap:10px;padding:12px 14px;background:rgba(10,15,30,0.8);border:1px solid var(--border);border-radius:10px;font-size:12px;color:var(--dim);transition:all 0.4s}
+.astep-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;transition:all 0.4s}
+.astep.active{color:var(--text);border-color:var(--border-hi)}
+.astep.active .astep-dot{background:var(--primary);box-shadow:0 0 8px rgba(129,140,248,0.7);animation:pulse 1s ease infinite}
+.astep.done{color:var(--text)}
+.astep.done .astep-dot{background:var(--teal)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ══════════════════════════════
+   TAB PAGES
+══════════════════════════════ */
+.tab-header{padding:24px 20px 16px}
+.section-divider{height:1px;background:var(--border);margin:0 20px 20px}
+
+/* ── MOOD TAB (메인, 히어로) ── */
+
+/* 무드 유형 히어로 — MBTI급 크게 */
+.mood-hero{
+  margin:0 16px 16px;border-radius:var(--r2);overflow:hidden;
+  position:relative;padding:28px 22px 26px;
+  border:1px solid rgba(129,140,248,0.2);
+  background:linear-gradient(135deg,rgba(10,12,28,0.95),rgba(20,14,40,0.9));
+}
+.mood-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--rose),transparent)}
+.mood-hero::after{content:'✦';position:absolute;top:20px;right:20px;font-size:16px;color:var(--primary);opacity:0.5}
+.mood-hero>*{position:relative;z-index:1}
+
+.mood-badge-row{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.mood-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(99,102,241,0.12);border:1px solid rgba(129,140,248,0.25);border-radius:50px;padding:4px 12px;font-size:10px;font-weight:900;color:var(--primary);letter-spacing:1.5px}
+.mood-badge-dot{width:5px;height:5px;border-radius:50%;background:var(--primary);animation:breathe 2s ease infinite}
+
+/* 기획: 유형명 크게 — MBTI급 */
+.mood-type-big{
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size:52px;letter-spacing:4px;
+  color:var(--text);line-height:1;margin-bottom:10px;
+}
+/* 기획: 한 줄 정의 강조 */
+.mood-type-def{
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size:19px;
+  color:var(--gold);margin-bottom:14px;line-height:1.4;
+}
+.mood-type-desc{font-size:12px;color:var(--muted);line-height:1.8;margin-bottom:18px}
+
+/* 기획: 닮은 연예인 추가 */
+.mood-celeb-label{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.mood-celeb-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.celeb-chip{
+  background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.25);
+  border-radius:50px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--gold);
+}
+
+/* 기획: 수치 제거 → 한줄 캐치프레이즈만 */
+.mood-catchphrase{
+  background:rgba(99,102,241,0.07);border:1px solid rgba(129,140,248,0.15);
+  border-radius:12px;padding:14px 16px;
+  font-size:13px;color:var(--text);line-height:1.7;
+  
+  position:relative;
+}
+.mood-catchphrase::before{content:'"';font-family: 'Noto Sans KR', sans-serif;font-size:40px;color:var(--primary);opacity:0.3;position:absolute;top:-6px;left:10px;line-height:1}
+
+/* 무드 공유 버튼 */
+.mood-share-btn{
+  width:calc(100% - 32px);margin:0 16px 14px;padding:14px;
+  border-radius:var(--r);border:1px solid rgba(129,140,248,0.3);
+  background:rgba(99,102,241,0.07);color:var(--primary);
+  font-size:13px;font-weight:900;font-family:inherit;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;
+}
+.mood-share-btn:hover{background:rgba(99,102,241,0.13)}
+
+/* 기획: 공유 카드 — 수치 대신 유형명+한줄정의+연예인 */
+.share-card-wrap{padding:0 16px 20px}
+.share-card{
+  border-radius:var(--r2);overflow:hidden;
+  background:linear-gradient(145deg,#0d1128,#050712);
+  border:1px solid rgba(129,140,248,0.15);
+  padding:24px 20px;position:relative;
+}
+.share-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 40% at 0% 0%,rgba(99,102,241,0.1),transparent),radial-gradient(ellipse 50% 60% at 100% 100%,rgba(201,169,110,0.07),transparent)}
+.share-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--primary),var(--gold),transparent)}
+.share-card-inner{position:relative;z-index:1}
+
+.share-card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.share-card-logo{font-size:11px;font-weight:900;letter-spacing:1px}
+.share-card-logo span{color:var(--primary)}
+.share-card-ai-badge{font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.2);border-radius:50px;padding:3px 8px}
+
+/* 기획: 수치 → 유형명 크게 */
+.share-type-area{text-align:center;padding:16px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:16px}
+.share-type-label{font-size:9px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.share-type-big{font-family: 'Noto Sans KR', sans-serif;font-size:44px;font-weight: 900; letter-spacing:5px;color:var(--text);line-height:1;margin-bottom:8px}
+.share-type-def{font-family: 'Noto Sans KR', sans-serif;font-size:16px;color:var(--gold);line-height:1.4}
+
+/* 기획: 닮은 연예인 */
+.share-celeb-area{margin-bottom:14px}
+.share-celeb-label{font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.share-celeb-chips{display:flex;gap:6px}
+.share-celeb-chip{background:rgba(201,169,110,0.08);border:1px solid rgba(201,169,110,0.2);border-radius:50px;padding:4px 10px;font-size:11px;font-weight:700;color:var(--gold)}
+
+/* 기획: SNS 공유 문구 */
+.share-sns-line{background:rgba(99,102,241,0.05);border:1px solid rgba(129,140,248,0.12);border-radius:10px;padding:10px 14px;font-size:11px;color:var(--muted);line-height:1.7}
+.share-sns-line em{color:var(--primary);font-style:normal;font-weight:700}
+
+.share-card-hashtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)}
+.share-card-hashtags span{font-size:10px;color:var(--primary);font-weight:700}
+
+/* AI 추천 액션 */
+.mood-action-section{margin:0 16px 16px;padding:20px;background:rgba(10,14,28,0.8);border:1px solid var(--border-hi);border-radius:var(--r2)}
+.mood-actions{display:flex;flex-direction:column;gap:8px}
+.mood-action-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--text);line-height:1.5}
+.mood-action-check{color:var(--primary);font-weight:900;flex-shrink:0;margin-top:1px}
+
+/* ── TODAY TAB ── */
+.skin-scores{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 20px}
+.skin-card{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:14px;position:relative;overflow:hidden}
+.skin-card::before{content:'';position:absolute;top:0;right:0;width:44px;height:44px;border-radius:0 0 0 100%;opacity:0.3}
+.skin-card.vitality::before{background:var(--primary)}
+.skin-card.redness::before{background:var(--rose)}
+.skin-card.darkcircle::before{background:rgba(129,140,248,0.5)}
+.skin-card.tone::before{background:rgba(125,211,200,0.5)}
+.skin-label{font-size:10px;color:var(--dim);font-weight:700;letter-spacing:1px;margin-bottom:7px}
+.skin-val{font-size:24px;font-weight:900;line-height:1;color:var(--primary)}
+.skin-status{font-size:10px;color:var(--muted);margin-top:4px;font-weight:700}
+
+.rec-section{padding:0 16px 20px}
+.rec-title{font-size:11px;font-weight:900;letter-spacing:2px;color:var(--primary);text-transform:uppercase;margin-bottom:12px}
+.rec-chips{display:flex;flex-direction:column;gap:7px}
+.rec-chip{display:flex;align-items:center;gap:12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.rec-chip-swatch{width:32px;height:32px;border-radius:8px;flex-shrink:0}
+.rec-chip-info strong{display:block;font-size:13px;font-weight:700;margin-bottom:1px}
+.rec-chip-info span{font-size:11px;color:var(--muted)}
+
+.ai-comment{margin:0 16px 16px;padding:16px 18px;background:linear-gradient(135deg,rgba(99,102,241,0.07),rgba(201,169,110,0.04));border:1px solid rgba(129,140,248,0.18);border-radius:var(--r2);position:relative}
+.ai-comment::before{content:'✦';position:absolute;top:14px;right:14px;font-size:11px;color:var(--primary);opacity:0.5}
+.ai-comment-label{font-size:9px;font-weight:900;letter-spacing:2px;color:var(--primary);margin-bottom:7px;text-transform:uppercase}
+.ai-comment-text{font-size:13px;color:var(--text);line-height:1.8;}
+
+.locked-row{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin:0 16px 8px;opacity:0.6}
+.locked-left{display:flex;align-items:center;gap:10px}
+.locked-icon{font-size:16px}
+.locked-title{font-size:13px;font-weight:700}
+.locked-desc{font-size:10px;color:var(--dim);margin-top:1px}
+.lock-pill{background:rgba(99,102,241,0.06);border:1px solid rgba(129,140,248,0.18);border-radius:50px;padding:3px 9px;font-size:9px;color:var(--muted);white-space:nowrap}
+
+/* ── TRANSFORM TAB ── */
+
+/* 기획: 스타일 선택 → 바로 3개 생성 (단계 하나 제거) */
+.transform-question{padding:18px 16px 14px}
+.style-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 16px}
+.style-btn{
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:16px 12px;cursor:pointer;
+  text-align:left;font-family:inherit;transition:all 0.2s;
+}
+.style-btn:hover{border-color:var(--border-hi);background:rgba(99,102,241,0.06)}
+.style-btn.selected{border-color:var(--primary);background:rgba(99,102,241,0.1)}
+.style-label{font-size:13px;font-weight:700;display:block;margin-bottom:2px}
+.style-sub{font-size:10px;color:var(--muted)}
+
+/* 기획: 컨셉 3개 바로 한화면 표시 */
+.concept-section{padding:0 16px 16px}
+.concept-cards-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px}
+.concept-card-mini{
+  background:var(--surface2);border:1.5px solid var(--border);
+  border-radius:var(--r);padding:14px 10px;cursor:pointer;
+  text-align:center;font-family:inherit;transition:all 0.2s;
+}
+.concept-card-mini:hover{border-color:var(--border-hi)}
+.concept-card-mini.selected{border-color:var(--primary);background:rgba(99,102,241,0.1)}
+.concept-card-mini strong{display:block;font-size:12px;font-weight:900;margin-bottom:4px;line-height:1.3}
+.concept-card-mini span{font-size:10px;color:var(--muted);line-height:1.4}
+
+/* 기획: Before/After 화면 70% 차지 */
+.transform-result{padding:0 16px 16px}
+
+/* BA 영역 — 70% of result view */
+.before-after-big{
+  display:grid;grid-template-columns:1fr 1fr;
+  height:300px;margin-bottom:12px;border-radius:var(--r2);overflow:hidden;
+  border:1px solid var(--border);position:relative;
+}
+.ba-panel-big{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.ba-panel-big.ba-before{background:linear-gradient(135deg,#0d1117,#161b28)}
+.ba-panel-big.ba-after{background:linear-gradient(135deg,#0f1020,#0a0d1e)}
+.ba-selfie-big{width:100%;height:100%;object-fit:cover;display:none}
+.ba-placeholder-big{text-align:center;padding:20px}
+.ba-placeholder-big p{font-size:11px;color:var(--dim);margin-top:8px;line-height:1.6}
+.ba-label-big{position:absolute;top:10px;left:10px;font-size:10px;font-weight:900;letter-spacing:1.5px;padding:4px 10px;border-radius:50px}
+.ba-before .ba-label-big{color:var(--muted);background:rgba(255,255,255,0.07);border:1px solid var(--border)}
+.ba-after .ba-label-big{color:var(--primary);background:rgba(99,102,241,0.12);border:1px solid rgba(129,140,248,0.25)}
+.ba-divider-line{position:absolute;top:0;bottom:0;left:50%;width:2px;background:linear-gradient(180deg,transparent,var(--primary),transparent);transform:translateX(-50%);z-index:5}
+.ba-divider-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:32px;height:32px;background:var(--bg);border:1px solid var(--border-hi);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;z-index:6}
+
+/* 기획: After 잠금 블러 처리 */
+.ba-lock-overlay{
+  position:absolute;inset:0;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  background:rgba(3,4,10,0.45);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;z-index:10;
+}
+.ba-lock-icon{font-size:24px}
+.ba-lock-text{font-family: 'Noto Sans KR', sans-serif;font-size:15px;color:var(--text)}
+.ba-unlock-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--primary2),rgba(99,102,241,0.85));
+  border:none;border-radius:50px;padding:10px 20px;
+  font-family:inherit;font-size:12px;font-weight:900;color:#fff;cursor:pointer;
+  transition:all 0.2s;box-shadow:0 6px 20px rgba(99,102,241,0.3);
+}
+.ba-unlock-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(99,102,241,0.4)}
+
+/* 기획: 스타일 정보 30% */
+.ba-style-info{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:var(--r);padding:14px 16px;margin-bottom:12px;
+}
+.ba-style-name{font-family: 'Noto Sans KR', sans-serif;font-size:18px;font-weight: 900; letter-spacing:2px;color:var(--primary);margin-bottom:3px}
+.ba-style-desc{font-size:12px;color:var(--muted)}
+
+/* 변신 상세 태그 */
+.change-tags{display:flex;flex-direction:column;gap:8px}
+.change-row{background:var(--surface2);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px}
+.change-row-label{font-size:10px;font-weight:900;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.change-chips{display:flex;flex-wrap:wrap;gap:5px}
+.change-chip{padding:4px 10px;border-radius:50px;background:rgba(99,102,241,0.08);border:1px solid rgba(129,140,248,0.18);font-size:11px;color:var(--primary);font-weight:700}
+.change-chip.rose{background:rgba(232,165,152,0.08);border-color:rgba(232,165,152,0.2);color:var(--rose)}
+.change-chip.gold{background:rgba(201,169,110,0.08);border-color:rgba(201,169,110,0.2);color:var(--gold)}
+
+/* ── PAYWALL ── */
+.transform-paywall{margin-top:12px}
+.paywall-locked-hint{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;margin-bottom:12px;
+  background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.2);border-radius:var(--r);
+}
+.paywall-lock-icon{font-size:20px;flex-shrink:0}
+.paywall-locked-title{font-size:13px;font-weight:900;margin-bottom:2px}
+.paywall-locked-sub{font-size:11px;color:var(--muted)}
+.paywall-card{
+  padding:22px;background:linear-gradient(135deg,rgba(10,14,28,0.95),rgba(25,18,50,0.8));
+  border:1px solid rgba(201,169,110,0.28);border-radius:var(--r2);position:relative;overflow:hidden;
+}
+.paywall-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,169,110,0.5),transparent)}
+.paywall-badge{display:inline-block;background:rgba(201,169,110,0.1);border:1px solid rgba(201,169,110,0.22);border-radius:50px;padding:3px 10px;font-size:10px;font-weight:900;color:var(--gold);letter-spacing:1.5px;margin-bottom:8px}
+.paywall-price{font-family: 'Noto Sans KR', sans-serif;font-size:38px;font-weight:600;color:var(--text);margin-bottom:14px}
+.paywall-price sub{font-size:14px;color:var(--muted);font-family:'Noto Sans KR',sans-serif}
+.paywall-list{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:18px}
+.paywall-list li{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.paywall-list li::before{content:'✓';color:var(--primary);font-weight:900;font-size:11px}
+
+/* ── TAB BAR ── */
+.tabbar{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:430px;height:var(--tab-h);
+  background:rgba(3,4,10,0.96);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);display:flex;align-items:stretch;z-index:300;
+}
+.tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;padding-top:2px;color:var(--dim);font-size:11px;font-weight:700;
+  letter-spacing:0.3px;transition:color 0.2s;cursor:pointer;position:relative;
+}
+.tab.active{color:var(--primary)}
+.tab.active::after{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:2px;background:var(--primary);border-radius:0 0 3px 3px}
+.tab-icon{font-size:18px;line-height:1}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:calc(var(--tab-h) + 14px);left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(10,15,30,0.96);border:1px solid var(--border-hi);border-radius:50px;
+  padding:9px 18px;font-size:12px;color:var(--text);font-weight:700;
+  opacity:0;transition:all 0.3s;z-index:1000;white-space:nowrap;pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── GEN LOADING ── */
+.gen-loading{display:none;position:fixed;inset:0;background:rgba(3,4,10,0.93);z-index:500;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center}
+.gen-loading.active{display:flex}
+.gen-loading p{font-size:13px;color:var(--muted)}
+
+/* ── PLACEHOLDER STATE ── */
+.placeholder-state{padding:50px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:14px}
+.placeholder-text{font-size:13px;color:var(--dim);line-height:1.8}
+
+/* ── 첫인상 충격 섹션 ── */
+.impression-section{
+  margin:0 16px 16px;border-radius:var(--r2);overflow:hidden;
+  border:1px solid rgba(232,165,152,0.22);
+  background:linear-gradient(135deg,rgba(10,12,28,0.95),rgba(25,10,20,0.9));
+  padding:22px 20px;position:relative;
+}
+.impression-section::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose),var(--gold),transparent)}
+.impression-title{font-size:10px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;color:var(--rose);margin-bottom:16px}
+.impression-rows{display:flex;flex-direction:column;gap:10px}
+.impression-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.impression-label{font-size:13px;color:var(--text);font-weight:600;min-width:90px}
+.impression-bar-wrap{flex:1;height:5px;background:rgba(255,255,255,0.07);border-radius:50px;overflow:hidden}
+.impression-bar{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--rose),var(--gold));transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+.impression-pct{font-size:13px;font-weight:900;color:var(--gold);min-width:38px;text-align:right}
+
+/* ── 오해 섹션 ── */
+.misread-text{font-size:14px;color:var(--text);line-height:1.8;font-weight:600}
+.misread-text em{color:var(--rose);font-style:normal}
+
+/* impression bars — color variants */
+.imp-bar-rose{background:linear-gradient(90deg,var(--rose),rgba(232,165,152,0.6)) !important}
+.imp-bar-gold{background:linear-gradient(90deg,var(--gold),rgba(201,169,110,0.6)) !important}
+.imp-pct-rose{color:var(--rose) !important}
+.imp-pct-gold{color:var(--gold) !important}
+
+/* ── Transform 적용 예정 항목 ── */
+.paywall-preview-list{
+  margin-bottom:16px;padding:14px 16px;
+  background:rgba(201,169,110,0.05);
+  border:1px solid rgba(201,169,110,0.18);
+  border-radius:var(--r);
+}
+.paywall-preview-title{font-size:10px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.paywall-preview-items{display:flex;flex-direction:column;gap:6px}
+.paywall-preview-item{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}
+.paywall-preview-item::before{content:'✨';font-size:11px}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ════════════════════════
+     HOME PAGE
+════════════════════════ -->
+<div class="page active" id="page-home">
+  <div class="page-content" style="padding-bottom:0">
+
+    <nav class="topbar" id="topbar">
+      <div class="topbar-logo">
+        <div class="topbar-logo-main">
+          <div class="topbar-logo-dot"></div>
+          <span>ToneOn<span class="logo-match">Match</span></span>
+        </div>
+        <div class="topbar-logo-sub">내 얼굴에 톤을 켜다</div>
+      </div>
+      <div id="topbar-right" class="topbar-action"></div>
+    </nav>
+
+    <!-- HERO: Mood 정체성 메시지 -->
+    <div class="hero-card-inner">
+      <div class="home-greeting"><div class="home-greeting-dot"></div>AI 첫인상 분석</div>
+      <h1 class="h1">왜 나는 꾸며도<br><em>분위기가 안 나는 걸까?</em></h1>
+      <p class="caption" style="margin-top:10px;font-size:12px">셀카 한 장으로 사람들이 보는 내 첫인상 유형을 확인해보세요</p>
+    </div>
+
+    <!-- UPLOAD -->
+    <div class="upload-zone-home" id="home-upload-zone" onclick="document.getElementById('home-file-input').click()">
+      <input type="file" id="home-file-input" accept="image/*" capture="user" style="display:none">
+      <img id="home-preview" alt="업로드된 사진">
+      <div id="home-upload-placeholder">
+        <div class="upload-icon">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        </div>
+        <div class="upload-title">셀카를 업로드하세요</div>
+        <div class="upload-hint">정면 자연광 · JPG, PNG · 약 30초</div>
+        <div class="upload-badge">START</div>
+      </div>
+    </div>
+
+    <!-- 기획: Mood 유형 퀵 선택이 메인 -->
+    <div class="home-vibe-section">
+      <div class="home-section-label">어떤 분위기 유형이 궁금하세요?</div>
+      <div class="home-vibe-grid">
+        <button class="home-vibe-btn mood-type-btn" onclick="quickMood('Soft Luxury')">
+          <span class="home-vibe-title">✦ Soft Luxury</span>
+          <span class="home-vibe-sub">부잣집 딸이라 착각하게 되는</span>
+        </button>
+        <button class="home-vibe-btn mood-type-btn" onclick="quickMood('Cool Muse')">
+          <span class="home-vibe-title">◈ Cool Muse</span>
+          <span class="home-vibe-sub">처음엔 차가운데 계속 기억나는</span>
+        </button>
+        <button class="home-vibe-btn mood-type-btn" onclick="quickMood('Clean Beauty')">
+          <span class="home-vibe-title">○ Clean Beauty</span>
+          <span class="home-vibe-sub">화장보다 생얼이 더 강한</span>
+        </button>
+        <button class="home-vibe-btn mood-type-btn" onclick="quickMood('Gentle Aura')">
+          <span class="home-vibe-title">◌ Gentle Aura</span>
+          <span class="home-vibe-sub">조용한데 은근히 잊히지 않는</span>
+        </button>
+      </div>
+      <div class="home-divider"><span>또는</span></div>
+      <button class="home-vibe-btn gold-btn" style="width:100%;flex-direction:row;justify-content:space-between;align-items:center" onclick="goToTab('transform')">
+        <span>
+          <span class="home-vibe-title" style="color:var(--gold)">AI 변신 바로 하기</span>
+          <span class="home-vibe-sub">스타일 선택 → 즉시 생성</span>
+        </span>
+        <span style="font-size:18px">→</span>
+      </button>
+    </div>
+
+    <div style="height:90px"></div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     ANALYZING PAGE
+════════════════════════ -->
+<div class="page" id="page-analyzing">
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 24px;text-align:center">
+    <div class="analyze-orb">
+      <div class="analyze-ring"></div><div class="analyze-ring2"></div><div class="analyze-ring3"></div>
+      <span class="analyze-icon">
+        <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </span>
+    </div>
+    <span class="eyebrow">AI 분석 중</span>
+    <h2 class="h2" style="margin-bottom:8px">분위기를 읽고 있어요</h2>
+    <p class="caption">약 20~30초 소요됩니다</p>
+    <div class="analyze-steps">
+      <div class="astep active" id="astep1"><div class="astep-dot"></div>피부 상태 분석</div>
+      <div class="astep" id="astep2"><div class="astep-dot"></div>분위기 유형 분류</div>
+      <div class="astep" id="astep3"><div class="astep-dot"></div>닮은 연예인 매칭</div>
+      <div class="astep" id="astep4"><div class="astep-dot"></div>공유 카드 생성</div>
+      <div class="astep" id="astep5"><div class="astep-dot"></div>변신 컨셉 매칭</div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════
+     MAIN APP (tabs)
+════════════════════════ -->
+<div class="page" id="page-tabs">
+
+  <!-- ── 기획: MOOD 탭 (메인 히어로) ── -->
+  <div id="tab-mood" class="page-content" style="display:none">
+    <div class="tab-header">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        뒤로
+      </button>
+      <h2 class="h2">내 분위기 유형</h2>
+      <p class="caption" style="margin-top:4px">오늘 당신에게서 느껴지는 무드</p>
+    </div>
+
+    <!-- ★ 스크린샷 존 — 모든 바이럴 요소가 한 카드에 -->
+    <div class="mood-hero" id="screenshot-zone">
+      <div class="mood-badge-row">
+        <div class="mood-badge"><span class="mood-badge-dot"></span>AI MOOD TYPE</div>
+        <div style="font-size:9px;color:var(--dim);letter-spacing:1px;font-weight:700">ToneOnMatch</div>
+      </div>
+
+      <!-- 유형명 크게 (MBTI급) -->
+      <div class="mood-type-big" id="mood-type-big">SOFT LUXURY</div>
+      <!-- 한줄 정의 강조 -->
+      <div class="mood-type-def" id="mood-type-def">"가만히 있어도 고급스러운 사람"</div>
+
+      <!-- 닮은 연예인 -->
+      <div class="mood-celeb-label" id="mood-celeb-label-el">닮은 인물</div>
+      <div class="mood-celeb-chips" id="mood-celeb-chips" style="margin-bottom:16px">
+        <span class="celeb-chip" id="celeb1">김지원</span>
+        <span class="celeb-chip" id="celeb2">한소희</span>
+        <span class="celeb-chip" id="celeb3">수지</span>
+      </div>
+
+      <!-- 구분선 -->
+      <div style="height:1px;background:rgba(255,255,255,0.06);margin-bottom:14px"></div>
+
+      <!-- ★ 첫인상 수치 (긴장감 포함) — 인 카드 -->
+      <div style="margin-bottom:14px">
+        <div style="font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:10px">✦ 사람들이 나를 볼 때</div>
+        <div class="impression-rows" id="impression-section">
+          <div class="impression-row">
+            <span class="impression-label" id="imp-label1">세련됨</span>
+            <div class="impression-bar-wrap"><div class="impression-bar" id="imp-bar1" style="width:0%"></div></div>
+            <span class="impression-pct" id="imp-pct1">0%</span>
+          </div>
+          <div class="impression-row">
+            <span class="impression-label" id="imp-label2">존재감</span>
+            <div class="impression-bar-wrap"><div class="impression-bar imp-bar-rose" id="imp-bar2" style="width:0%"></div></div>
+            <span class="impression-pct imp-pct-rose" id="imp-pct2">0%</span>
+          </div>
+          <div class="impression-row">
+            <span class="impression-label" id="imp-label3">신뢰감</span>
+            <div class="impression-bar-wrap"><div class="impression-bar imp-bar-gold" id="imp-bar3" style="width:0%"></div></div>
+            <span class="impression-pct imp-pct-gold" id="imp-pct3">0%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 구분선 -->
+      <div style="height:1px;background:rgba(255,255,255,0.06);margin-bottom:14px"></div>
+
+      <!-- ★ 오해하는 점 — 독립 카드처럼 강하게, 핵심 훅 -->
+      <div id="misread-section" style="background:linear-gradient(135deg,rgba(232,165,152,0.1),rgba(232,165,152,0.04));border:1px solid rgba(232,165,152,0.3);border-radius:14px;padding:16px 18px;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--rose),transparent)"></div>
+        <div style="font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--rose);margin-bottom:10px">💬 사람들이 오해하는 점</div>
+        <div class="misread-text" id="misread-text" style="font-size:18px;line-height:1.6;font-weight:900;letter-spacing:-0.3px">도도할 것 같지만 <em>실제론 다정한 타입</em></div>
+        <div style="margin-top:8px;font-size:11px;color:rgba(232,165,152,0.6);font-weight:600">← 가장 많이 공유되는 결과예요</div>
+      </div>
+    </div>
+
+    <!-- 공유 버튼 — 인센티브 포함 -->
+    <div style="margin:0 16px 6px">
+      <button class="mood-share-btn" style="width:100%;margin:0;border-radius:var(--r)" onclick="showShareCard()">
+        📸 공유 카드 보기 → 스크롤
+      </button>
+    </div>
+    <!-- ★ 공유 인센티브 — 공유 이유를 만들어줌 -->
+    <div style="margin:0 16px 14px;padding:10px 14px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.18);border-radius:10px;display:flex;align-items:center;gap:10px">
+      <span style="font-size:16px">🎁</span>
+      <div>
+        <div style="font-size:11px;font-weight:900;color:var(--gold);line-height:1.4">스토리에 공유하면</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:1px">숨겨진 분위기 유형 <strong style="color:var(--gold)">2개 추가 공개</strong></div>
+      </div>
+    </div>
+
+    <!-- ★ 공유 카드 — 결과 종합 카드 (한 장 캡처로 완결), 분석 결과와 함께 자동 표시 -->
+    <div class="share-card-wrap" id="share-card-wrap" style="display:none">
+      <div class="rec-title" style="margin-bottom:6px;padding-left:0">📸 캡처해서 스토리에 올리세요</div>
+      <div style="font-size:11px;color:var(--muted);margin-bottom:10px">이 한 장만 캡처해도 스토리 업로드가 가능해요</div>
+      <div class="share-card" id="share-card-el">
+        <div class="share-card-inner">
+          <div class="share-card-top">
+            <div class="share-card-logo">ToneOn<span>Match</span></div>
+            <div class="share-card-ai-badge">AI MOOD REPORT</div>
+          </div>
+
+          <!-- 유형명 크게 + 한줄정의 -->
+          <div class="share-type-area">
+            <div class="share-type-label">당신의 분위기 유형</div>
+            <div class="share-type-big" id="share-type-big">SOFT LUXURY</div>
+            <div class="share-type-def" id="share-type-def">"가만히 있어도 고급스러운 사람"</div>
+          </div>
+
+          <!-- 닮은 연예인 -->
+          <div class="share-celeb-area">
+            <div class="share-celeb-label">닮은 인물</div>
+            <div class="share-celeb-chips">
+              <span class="share-celeb-chip" id="s-celeb1">김지원</span>
+              <span class="share-celeb-chip" id="s-celeb2">한소희</span>
+              <span class="share-celeb-chip" id="s-celeb3">수지</span>
+            </div>
+          </div>
+
+          <!-- ★ 첫인상 수치 3개 — 긴장감 포함 -->
+          <div style="margin-bottom:12px;padding:12px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+            <div style="font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--primary);margin-bottom:9px">사람들이 나를 볼 때</div>
+            <div style="display:grid;gap:6px" id="share-imp-rows">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:11px;color:var(--muted)" id="s-imp-label1">세련됨</span>
+                <span style="font-size:13px;font-weight:900;color:var(--primary)" id="s-imp-pct1">92%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:11px;color:var(--muted)" id="s-imp-label2">존재감</span>
+                <span style="font-size:13px;font-weight:900;color:var(--rose)" id="s-imp-pct2">88%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:11px;color:var(--muted)" id="s-imp-label3">신뢰감</span>
+                <span style="font-size:13px;font-weight:900;color:var(--gold)" id="s-imp-pct3">90%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- ★ 오해하는 점 — 공유 카드 최강 요소, 더 크게 -->
+          <div style="background:rgba(232,165,152,0.1);border:1px solid rgba(232,165,152,0.25);border-radius:10px;padding:13px 14px;margin-bottom:12px;position:relative;overflow:hidden">
+            <div style="position:absolute;top:0;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--rose),transparent)"></div>
+            <div style="font-size:9px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;color:var(--rose);margin-bottom:7px">💬 사람들이 오해하는 점</div>
+            <div style="font-size:15px;color:var(--text);font-weight:900;line-height:1.55;letter-spacing:-0.2px" id="share-misread-text">도도할 것 같지만 실제론 다정한 타입</div>
+          </div>
+
+          <div class="share-card-hashtags">
+            <span>#내분위기유형</span>
+            <span id="share-hashtag">#SoftLuxury</span>
+            <span>#ToneOnMatch</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:10px" onclick="copyShareCard()">📤 인스타 스토리에 공유 →</button>
+      <div style="margin-top:8px;padding:9px 14px;background:rgba(201,169,110,0.06);border:1px solid rgba(201,169,110,0.18);border-radius:10px;font-size:11px;color:var(--gold);text-align:center;font-weight:700">
+        🎁 공유하면 숨겨진 유형 2개 추가 공개
+      </div>
+      <button class="btn btn-outline" style="margin-top:8px" onclick="goToTab('transform')">✨ AI 변신도 해보기 →</button>
+    </div>
+
+    <!-- AI 추천 액션 -->
+    <div class="mood-action-section">
+      <div class="rec-title" style="margin-bottom:12px">AI 추천 액션</div>
+      <div class="mood-actions">
+        <div class="mood-action-item"><span class="mood-action-check">✓</span><span id="mood-action-hair">레이어드컷으로 분위기 살리기</span></div>
+        <div class="mood-action-item"><span class="mood-action-check">✓</span><span id="mood-action-lip">립은 Dusty Rose 계열 추천</span></div>
+        <div class="mood-action-item"><span class="mood-action-check">✓</span><span id="mood-action-style">Quiet Luxury 스타일로 완성</span></div>
+      </div>
+      <button class="btn btn-primary" style="margin-top:14px" onclick="goToSalesPage()">전체 결과 보기 →</button>
+    </div>
+
+    <div style="height:20px"></div>
+  </div>
+
+  <!-- ── TODAY TAB ── -->
+  <div id="tab-today" class="page-content" style="display:none">
+    <div class="tab-header">
+      <button class="back-btn" onclick="showPage('home')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        뒤로
+      </button>
+      <h2 class="h2" id="today-greeting">오늘의 피부 상태</h2>
+      <p class="caption" style="margin-top:4px" id="today-date"></p>
+    </div>
+
+    <div class="skin-scores">
+      <div class="skin-card vitality"><div class="skin-label">생기</div><div class="skin-val" id="s-vitality">84</div><div class="skin-status">좋음</div></div>
+      <div class="skin-card redness"><div class="skin-label">붉은기</div><div class="skin-val" id="s-redness">22</div><div class="skin-status">낮음</div></div>
+      <div class="skin-card darkcircle"><div class="skin-label">다크서클</div><div class="skin-val" id="s-darkcircle">18</div><div class="skin-status">보통</div></div>
+      <div class="skin-card tone"><div class="skin-label">피부톤 균일도</div><div class="skin-val" id="s-tone">79</div><div class="skin-status">균일</div></div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <div class="rec-section">
+      <div class="rec-title">오늘 추천</div>
+      <div class="rec-chips">
+        <div class="rec-chip"><div class="rec-chip-swatch" id="lip-swatch" style="background:#c47a72"></div><div class="rec-chip-info"><strong id="lip-name">Rose Beige</strong><span>립</span></div></div>
+        <div class="rec-chip"><div class="rec-chip-swatch" id="eye-swatch" style="background:#7a5e4a"></div><div class="rec-chip-info"><strong id="eye-name">Mocha Brown</strong><span>아이섀도우</span></div></div>
+        <div class="rec-chip"><div class="rec-chip-swatch" id="blush-swatch" style="background:#e8a080"></div><div class="rec-chip-info"><strong id="blush-name">Peach Glow</strong><span>블러셔</span></div></div>
+      </div>
+    </div>
+
+    <div class="ai-comment">
+      <div class="ai-comment-label">AI 한줄평</div>
+      <div class="ai-comment-text" id="today-comment">오늘은 채도가 낮은 메이크업이 가장 자연스럽게 어울립니다.</div>
+    </div>
+
+    <div class="rec-section" style="padding-bottom:6px"><div class="rec-title">상세 분석</div></div>
+    <div class="locked-row"><div class="locked-left"><span class="locked-icon">💧</span><div><div class="locked-title">수분·유분 밸런스</div><div class="locked-desc">피부 타입별 케어 가이드</div></div></div><div class="lock-pill">🔒 PRO</div></div>
+    <div class="locked-row"><div class="locked-left"><span class="locked-icon">☀️</span><div><div class="locked-title">오늘의 SPF 권장 지수</div><div class="locked-desc">날씨·계절 반영 분석</div></div></div><div class="lock-pill">🔒 PRO</div></div>
+
+    <div class="px20" style="margin-top:16px;padding-bottom:8px">
+      <button class="btn btn-primary" onclick="goToTab('mood')">내 분위기 유형 보기 →</button>
+    </div>
+    <div style="height:20px"></div>
+  </div>
+
+  <!-- ── TRANSFORM TAB ── -->
+  <div id="tab-transform" class="page-content" style="display:none">
+
+    <!-- 기획: Step1 — 스타일 선택 → 바로 3개 생성 -->
+    <div id="transform-step1">
+      <div class="transform-question">
+        <button class="back-btn" onclick="showPage('home')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          뒤로
+        </button>
+        <h2 class="h2">어떤 느낌이 되고 싶으세요?</h2>
+        <p class="caption" style="margin-top:4px">선택하면 바로 3가지 컨셉이 생성됩니다</p>
+      </div>
+
+      <div class="style-grid">
+        <button class="style-btn" data-style="청순" onclick="selectStyle(this)">
+          <span class="style-label">청순하게</span><span class="style-sub">부드럽고 청초한</span>
+        </button>
+        <button class="style-btn" data-style="세련" onclick="selectStyle(this)">
+          <span class="style-label">세련되게</span><span class="style-sub">도시적이고 시크한</span>
+        </button>
+        <button class="style-btn" data-style="고급" onclick="selectStyle(this)">
+          <span class="style-label">고급스럽게</span><span class="style-sub">럭셔리하고 우아한</span>
+        </button>
+        <button class="style-btn" data-style="아이돌" onclick="selectStyle(this)">
+          <span class="style-label">아이돌처럼</span><span class="style-sub">화사하고 생기있는</span>
+        </button>
+        <button class="style-btn" data-style="소개팅" onclick="selectStyle(this)">
+          <span class="style-label">소개팅용</span><span class="style-sub">호감가는 자연스러운</span>
+        </button>
+        <button class="style-btn" data-style="출근" onclick="selectStyle(this)">
+          <span class="style-label">출근룩</span><span class="style-sub">신뢰감있고 단정한</span>
+        </button>
+      </div>
+
+      <!-- 기획: 컨셉 3개 한 화면에 바로 표시 -->
+      <div class="concept-section" id="concept-section" style="display:none">
+        <div class="rec-title" style="margin-bottom:10px">클릭해서 선택하세요</div>
+        <div class="concept-cards-row" id="concept-cards"></div>
+        <button class="btn btn-primary" onclick="generateTransform()" id="btn-transform" disabled>
+          이 스타일로 변신하기
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 2: Transform result — 기획: Before/After 70% -->
+    <div id="transform-step2" style="display:none">
+      <div class="transform-question">
+        <h2 class="h2" id="transform-result-title">변신 결과</h2>
+        <p class="caption" style="margin-top:4px" id="transform-result-sub"></p>
+      </div>
+
+      <div class="transform-result">
+        <!-- 기획: Before/After = 화면 70% -->
+        <div class="before-after-big">
+          <div class="ba-panel-big ba-before">
+            <div class="ba-label-big">BEFORE</div>
+            <img id="ba-before" class="ba-selfie-big" alt="">
+            <div class="ba-placeholder-big" id="ba-before-ph">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--dim)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <p>셀카 업로드 후<br>표시됩니다</p>
+            </div>
+          </div>
+
+          <div class="ba-divider-line"></div>
+          <div class="ba-divider-icon">✦</div>
+
+          <div class="ba-panel-big ba-after">
+            <div class="ba-label-big">AFTER</div>
+            <!-- 기획: After 잠금 블러 처리 -->
+            <div class="ba-lock-overlay">
+              <div class="ba-lock-icon">🔒</div>
+              <div class="ba-lock-text">전체 결과 보기</div>
+              <button class="ba-unlock-btn" onclick="window.open('https://qr.kakaopay.com/Ej8I5pKnl135609789','_blank')">₩9,900으로 잠금 해제</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 기획: 스타일 정보 30% -->
+        <div class="ba-style-info">
+          <div class="ba-style-name" id="ba-style-name">QUIET LUXURY</div>
+          <div class="ba-style-desc" id="ba-style-desc">선택한 변신 컨셉</div>
+        </div>
+
+        <!-- 변신 태그 상세 -->
+        <div class="change-tags" id="change-tags"></div>
+
+        <!-- 기획: 유료 잠금 — 변신 결과 -->
+        <div class="transform-paywall" id="transform-paywall" style="display:none">
+          <div class="paywall-locked-hint">
+            <span class="paywall-lock-icon">🔒</span>
+            <div>
+              <div class="paywall-locked-title">전체 변신 플랜이 잠겨 있어요</div>
+              <div class="paywall-locked-sub">헤어·메이크업·코디·비추천 스타일 포함</div>
+            </div>
+          </div>
+
+          <!-- 적용 예정 항목 -->
+          <div class="paywall-preview-list" id="paywall-preview-list">
+            <div class="paywall-preview-title">✨ 잠금 해제 시 적용 예정</div>
+            <div class="paywall-preview-items" id="paywall-preview-items"></div>
+          </div>
+
+          <!-- ★ AI 예측 변화량 — 헤어보다 변화량에 반응함 -->
+          <div id="ai-change-prediction" style="margin-bottom:12px;padding:14px 16px;background:rgba(99,102,241,0.06);border:1px solid rgba(129,140,248,0.2);border-radius:var(--r)">
+            <div style="font-size:9px;font-weight:900;letter-spacing:2px;text-transform:uppercase;color:var(--primary);margin-bottom:4px">📈 AI 예측 변화</div>
+            <div style="font-size:11px;color:var(--muted);margin-bottom:10px">변신 후 사람들의 첫인상이 이렇게 달라집니다</div>
+            <div style="display:grid;gap:7px" id="ai-change-rows">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:12px;color:var(--muted)" id="change-label1">고급스러움</span>
+                <span style="font-size:15px;font-weight:900;color:var(--teal)" id="change-val1">+18%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:12px;color:var(--muted)" id="change-label2">세련됨</span>
+                <span style="font-size:15px;font-weight:900;color:var(--teal)" id="change-val2">+14%</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <span style="font-size:12px;color:var(--muted)" id="change-label3">존재감</span>
+                <span style="font-size:15px;font-weight:900;color:var(--teal)" id="change-val3">+11%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="paywall-card">
+            <div class="paywall-badge">변신 패키지</div>
+            <div class="paywall-price">₩9,900<sub>/회</sub></div>
+            <ul class="paywall-list">
+              <li>AI 변신 결과 전체 공개</li>
+              <li>10가지 스타일 패키지</li>
+              <li>추천 헤어컷 & 컬러 상세</li>
+              <li>비추천 스타일 가이드</li>
+              <li>PDF 저장 가능</li>
+            </ul>
+            <button class="btn btn-gold" onclick="window.open('https://qr.kakaopay.com/Ej8I5pKnl135609789','_blank')">🔓 변신 결과 잠금 해제</button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="px20" style="margin-top:14px;padding-bottom:12px">
+        <button class="btn btn-outline" onclick="resetTransform()">← 다시 선택하기</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /page-tabs -->
+
+<!-- TAB BAR — 기획: Mood → Today → Transform 순서 -->
+<div class="tabbar" id="tabbar" style="display:none">
+  <div class="tab" id="tab-btn-mood" onclick="goToTab('mood')">
+    <span class="tab-icon">✦</span>
+    <span>내 분위기</span>
+  </div>
+  <div class="tab" id="tab-btn-today" onclick="goToTab('today')">
+    <span class="tab-icon">○</span>
+    <span>오늘의 나</span>
+  </div>
+  <div class="tab" id="tab-btn-transform" onclick="goToTab('transform')">
+    <span class="tab-icon">◈</span>
+    <span>변신하기</span>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="gen-loading" id="gen-loading">
+  <div class="analyze-orb" style="width:70px;height:70px;margin:0">
+    <div class="analyze-ring" style="animation-duration:1s"></div>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--primary)"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+  </div>
+  <p id="gen-loading-text">변신 컨셉 생성 중...</p>
+</div>
+
+<script>
+// ══════════════════════════════
+// STATE
+// ══════════════════════════════
+let state = {
+  imageBase64: null, imageMime: 'image/jpeg',
+  analysisResult: null, currentTab: 'mood',
+  selectedStyle: null, selectedConcept: null, analyzed: false
+};
+
+// ══════════════════════════════
+// HOME QUICK MOOD
+// ══════════════════════════════
+function quickMood(moodType) {
+  if(!state.imageBase64) {
+    document.getElementById('home-file-input').click();
+    showToast('셀카를 먼저 업로드해주세요 📷');
+    return;
+  }
+  if(state.analyzed) {
+    goToTab('mood');
+  } else {
+    startAnalysis();
+  }
+}
+
+// ══════════════════════════════
+// UPLOAD
+// ══════════════════════════════
+const homeFileInput = document.getElementById('home-file-input');
+const homePreview = document.getElementById('home-preview');
+const homeUploadPlaceholder = document.getElementById('home-upload-placeholder');
+const homeUploadZone = document.getElementById('home-upload-zone');
+
+homeFileInput.addEventListener('change', e => { if(e.target.files[0]) processFile(e.target.files[0]) });
+homeUploadZone.addEventListener('dragover', e => { e.preventDefault(); homeUploadZone.classList.add('dragover') });
+homeUploadZone.addEventListener('dragleave', () => homeUploadZone.classList.remove('dragover'));
+homeUploadZone.addEventListener('drop', e => {
+  e.preventDefault(); homeUploadZone.classList.remove('dragover');
+  if(e.dataTransfer.files[0]) processFile(e.dataTransfer.files[0]);
+});
+
+function processFile(file) {
+  if(!file.type.startsWith('image/')) return showToast('이미지 파일만 업로드 가능합니다');
+  state.imageMime = file.type;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const dataUrl = e.target.result;
+    state.imageBase64 = dataUrl.split(',')[1];
+    homePreview.src = dataUrl;
+    homePreview.style.display = 'block';
+    homeUploadPlaceholder.style.display = 'none';
+    homeUploadZone.classList.add('has-image');
+    setTimeout(() => startAnalysis(), 400);
+  };
+  reader.readAsDataURL(file);
+}
+
+// ══════════════════════════════
+// NAVIGATION
+// ══════════════════════════════
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  window.scrollTo(0,0);
+  const isMain = id === 'tabs';
+  document.getElementById('tabbar').style.display = isMain ? 'flex' : 'none';
+  document.getElementById('topbar-right').textContent = isMain ? '⟳' : '';
+  if(id === 'home') document.getElementById('topbar-right').onclick = null;
+  else if(isMain) document.getElementById('topbar-right').onclick = resetAll;
+}
+
+function goToTab(tab) {
+  state.currentTab = tab;
+  ['mood','today','transform'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === tab ? 'block' : 'none';
+    document.getElementById('tab-btn-' + t).classList.toggle('active', t === tab);
+  });
+  showPage('tabs');
+}
+
+// ══════════════════════════════
+// ANALYSIS
+// ══════════════════════════════
+function startAnalysis() {
+  if(!state.imageBase64) { showToast('먼저 셀카를 업로드해주세요 📷'); return; }
+  showPage('analyzing');
+  animateAnalyzeSteps();
+  callAPI();
+}
+
+function animateAnalyzeSteps() {
+  const steps = ['astep1','astep2','astep3','astep4','astep5'];
+  let i = 0;
+  const iv = setInterval(() => {
+    if(i > 0) { const prev = document.getElementById(steps[i-1]); prev.classList.remove('active'); prev.classList.add('done'); }
+    if(i < steps.length) { document.getElementById(steps[i]).classList.add('active'); i++; }
+    else clearInterval(iv);
+  }, 1500);
+}
+
+async function callAPI() {
+  const prompt = `당신은 한국의 전문 뷰티 코치입니다.
+이 셀카를 분석하여 다음을 JSON으로만 응답하세요. 다른 텍스트 없이 순수 JSON만 반환하세요.
+
+{
+  "vitality": 숫자(60-96),
+  "redness": 숫자(5-40),
+  "darkcircle": 숫자(5-40),
+  "tone_uniformity": 숫자(55-95),
+  "lip_color": hex코드(예:"#c47a72"),
+  "lip_name": "립 컬러 영문명",
+  "eye_color": hex코드(예:"#7a5e4a"),
+  "eye_name": "섀도우 영문명",
+  "blush_color": hex코드(예:"#e8a080"),
+  "blush_name": "블러셔 영문명",
+  "today_comment": "오늘 메이크업 한줄 조언 (한국어, 30자 이내)",
+  "mood_type": "다음 중 하나: Soft Luxury | Cool Muse | Clean Beauty | Gentle Aura | Urban Chic | Warm Classic",
+  "mood_type_upper": "영문 대문자 (예: SOFT LUXURY)",
+  "mood_def": "한 줄 정의 (예: 가만히 있어도 고급스러운 사람) — 15자 이내",
+  "mood_desc": "무드 설명 1문장 (한국어, 30자 이내)",
+  "mood_catchphrase": "무드 캐치프레이즈 (한국어, 20자 이내, 시적 표현)",
+  "sns_hook": "SNS 공유 문구 — 친구들이 처음 볼 때 이런 인상 (15자 이내)",
+  "celeb1": "닮은 연예인1 (한국 여배우/아이돌)",
+  "celeb2": "닮은 연예인2",
+  "celeb3": "닮은 연예인3",
+  "mood_hashtag": "#영문무드태그 (예: #SoftLuxury)",
+  "imp_label1": "첫인상 키워드1 — 긍정 (예: 세련됨, 고급스러움, 도도함 등 5자 이내)",
+  "imp_val1": 숫자(75-95),
+  "imp_label2": "첫인상 키워드2 — 긍정 (예: 존재감, 카리스마, 청순함 등 5자 이내)",
+  "imp_val2": 숫자(75-95),
+  "imp_label3": "첫인상 키워드3 — 신뢰/매력 (예: 신뢰감, 친근함, 편안함 등 5자 이내)",
+  "imp_val3": 숫자(75-95),
+  "misread": "사람들이 오해하는 점 — 짧고 임팩트 있게 (예: 도도할 것 같지만 실제론 다정한 타입) 25자 이내"
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true',
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1200,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: state.imageMime, data: state.imageBase64 } },
+            { type: 'text', text: prompt }
+          ]
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || '';
+    const clean = text.replace(/```json|```/g,'').trim();
+    const result = JSON.parse(clean);
+    state.analysisResult = result;
+    setTimeout(() => renderAll(result), 800);
+  } catch(err) {
+    console.error(err);
+    const demo = {
+      vitality:84, redness:22, darkcircle:18, tone_uniformity:79,
+      lip_color:'#c47a72', lip_name:'Rose Beige',
+      eye_color:'#7a5e4a', eye_name:'Mocha Brown',
+      blush_color:'#e8a080', blush_name:'Peach Glow',
+      today_comment:'오늘은 채도가 낮은 메이크업이 자연스럽게 어울립니다.',
+      mood_type:'Soft Luxury', mood_type_upper:'SOFT LUXURY',
+      mood_def:'가만히 있어도 고급스러운 사람',
+      mood_desc:'차분한 럭셔리 무드가 자연스럽게 배어나오는 타입입니다.',
+      mood_catchphrase:'꾸미지 않아도 분위기가 만들어지는 타입',
+      sns_hook:'이런 인상을 받는다고 합니다.',
+      celeb1:'김지원', celeb2:'한소희', celeb3:'수지',
+      mood_hashtag:'#SoftLuxury',
+      imp_label1:'세련됨',    imp_val1:92,
+      imp_label2:'존재감',    imp_val2:88,
+      imp_label3:'신뢰감',    imp_val3:90,
+      misread:'도도할 것 같지만 실제론 다정한 타입'
+    };
+    state.analysisResult = demo;
+    setTimeout(() => renderAll(demo), 800);
+  }
+}
+
+function renderAll(r) {
+  // TODAY
+  document.getElementById('today-date').textContent = new Date().toLocaleDateString('ko-KR', {month:'long',day:'numeric',weekday:'long'});
+  document.getElementById('s-vitality').textContent = r.vitality;
+  document.getElementById('s-redness').textContent = r.redness;
+  document.getElementById('s-darkcircle').textContent = r.darkcircle;
+  document.getElementById('s-tone').textContent = r.tone_uniformity;
+  document.getElementById('lip-swatch').style.background = r.lip_color;
+  document.getElementById('lip-name').textContent = r.lip_name;
+  document.getElementById('eye-swatch').style.background = r.eye_color;
+  document.getElementById('eye-name').textContent = r.eye_name;
+  document.getElementById('blush-swatch').style.background = r.blush_color;
+  document.getElementById('blush-name').textContent = r.blush_name;
+  document.getElementById('today-comment').textContent = r.today_comment;
+
+  // MOOD — 유형명 크게, 한줄정의, 닮은 연예인
+  document.getElementById('mood-type-big').textContent = r.mood_type_upper || r.mood_type.toUpperCase();
+  document.getElementById('mood-type-def').textContent = '"' + r.mood_def + '"';
+
+  // 닮은 연예인
+  document.getElementById('celeb1').textContent = r.celeb1;
+  document.getElementById('celeb2').textContent = r.celeb2;
+  document.getElementById('celeb3').textContent = r.celeb3;
+
+  // 공유 카드 — 종합 결과 카드
+  document.getElementById('share-type-big').textContent = r.mood_type_upper || r.mood_type.toUpperCase();
+  document.getElementById('share-type-def').textContent = '"' + r.mood_def + '"';
+  document.getElementById('s-celeb1').textContent = r.celeb1;
+  document.getElementById('s-celeb2').textContent = r.celeb2;
+  document.getElementById('s-celeb3').textContent = r.celeb3;
+  document.getElementById('share-hashtag').textContent = r.mood_hashtag || '#SoftLuxury';
+
+  // Before on transform
+  if(state.imageBase64) {
+    const bb = document.getElementById('ba-before');
+    bb.src = 'data:' + state.imageMime + ';base64,' + state.imageBase64;
+    bb.style.display = 'block';
+    document.getElementById('ba-before-ph').style.display = 'none';
+  }
+
+  state.analyzed = true;
+
+  // Mood 액션
+  const moodActionMap = {
+    'Soft Luxury':  { hair:'레이어드컷으로 고급스러운 분위기 살리기', lip:'Dusty Rose 계열 립 추천', style:'Quiet Luxury 스타일로 완성' },
+    'Cool Muse':    { hair:'딥파트로 강렬함 연출', lip:'Deep Rose 계열 립 추천', style:'City Muse 스타일로 완성' },
+    'Clean Beauty': { hair:'C컬 웨이브로 청순함 강조', lip:'Nude Pink 계열 립 추천', style:'Natural Glow 스타일로 완성' },
+    'Gentle Aura':  { hair:'커튼뱅으로 부드러운 인상 만들기', lip:'Peach Rose 계열 립 추천', style:'Soft Bloom 스타일로 완성' },
+    'Urban Chic':   { hair:'숏 밥컷으로 도시적 감성 강조', lip:'Berry Mauve 계열 립 추천', style:'Modern Minimal 스타일로 완성' },
+    'Warm Classic': { hair:'S컬 웨이브로 클래식함 강조', lip:'Warm Coral 계열 립 추천', style:'Old Money 스타일로 완성' },
+  };
+  const actionData = moodActionMap[r.mood_type] || moodActionMap['Soft Luxury'];
+  document.getElementById('mood-action-hair').textContent = actionData.hair;
+  document.getElementById('mood-action-lip').textContent = actionData.lip;
+  document.getElementById('mood-action-style').textContent = actionData.style;
+
+  // 기획: Mood 탭 먼저 (Today 아님)
+  goToTab('mood');
+
+  // 첫인상 수치 애니메이션 (탭 전환 후 약간 딜레이)
+  setTimeout(() => {
+    // 첫인상 수치 — 긴장감 포함 3가지
+    const impData = [
+      { label: r.imp_label1 || '세련됨',  val: r.imp_val1 || 92 },
+      { label: r.imp_label2 || '존재감',  val: r.imp_val2 || 88 },
+      { label: r.imp_label3 || '신뢰감',  val: r.imp_val3 || 90 },
+    ];
+    impData.forEach((d, i) => {
+      const n = i + 1;
+      document.getElementById('imp-label' + n).textContent = d.label;
+      document.getElementById('imp-pct' + n).textContent = d.val + '%';
+      setTimeout(() => {
+        document.getElementById('imp-bar' + n).style.width = d.val + '%';
+      }, i * 180);
+    });
+
+    // 공유 카드 수치 업데이트
+    const sImpLabels = ['s-imp-label1','s-imp-label2','s-imp-label3'];
+    const sImpPcts   = ['s-imp-pct1','s-imp-pct2','s-imp-pct3'];
+    impData.forEach((d, i) => {
+      const lEl = document.getElementById(sImpLabels[i]);
+      const pEl = document.getElementById(sImpPcts[i]);
+      if(lEl) lEl.textContent = d.label;
+      if(pEl) pEl.textContent = d.val + '%';
+    });
+  }, 400);
+
+  // 오해받는 점 — 메인 카드 + 공유 카드 동기화
+  if(r.misread) {
+    const misreadEl = document.getElementById('misread-text');
+    if(misreadEl) {
+      const parts = r.misread.split(/(실제론|하지만|사실은)/);
+      if(parts.length > 1) {
+        misreadEl.innerHTML = parts[0] + '<em>' + parts.slice(1).join('') + '</em>';
+      } else {
+        misreadEl.textContent = r.misread;
+      }
+    }
+    // 공유 카드 misread sync
+    const shareMisread = document.getElementById('share-misread-text');
+    if(shareMisread) shareMisread.textContent = r.misread;
+  }
+
+  // ★ 공유 카드 자동 표시 — 버튼 클릭 불필요, 결과와 함께 바로 노출
+  setTimeout(() => {
+    const w = document.getElementById('share-card-wrap');
+    if(w) w.style.display = 'block';
+  }, 600);
+}
+
+// ══════════════════════════════
+// MOOD TAB
+// ══════════════════════════════
+function showShareCard() {
+  // 공유 카드가 이미 표시 중이면 스크롤만, 아니면 표시 후 스크롤
+  const w = document.getElementById('share-card-wrap');
+  w.style.display = 'block';
+  setTimeout(() => w.scrollIntoView({behavior:'smooth', block:'nearest'}), 80);
+}
+function copyShareCard() {
+  const r = state.analysisResult;
+  const type = r ? (r.mood_type_upper || r.mood_type) : 'SOFT LUXURY';
+  const def  = r ? r.mood_def : '가만히 있어도 고급스러운 사람';
+  const c1   = r ? r.celeb1 : '김지원';
+  const c2   = r ? r.celeb2 : '한소희';
+  const c3   = r ? r.celeb3 : '수지';
+  const mis  = r ? r.misread : '도도할 것 같지만 실제론 다정한 타입';
+  const tag  = r ? (r.mood_hashtag || '#SoftLuxury') : '#SoftLuxury';
+  const text =
+    `나의 분위기 유형: ${type}\n"${def}"\n닮은 인물: ${c1} · ${c2} · ${c3}\n"${mis}"\ntoneonmatch.com #내분위기유형 ${tag} #ToneOnMatch`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+  showToast('📋 복사됐어요! 스토리 캡션에 붙여넣으세요 ✦');
+}
+
+// ══════════════════════════════
+// TRANSFORM TAB — 기획: 단계 하나 제거
+// ══════════════════════════════
+const CONCEPTS = {
+  '고급': [
+    { name:'Quiet Luxury', desc:'차분하고 고급스러운' },
+    { name:'Old Money', desc:'클래식하고 우아한' },
+    { name:'Elegant Muse', desc:'세련되고 여성스러운' }
+  ],
+  '세련': [
+    { name:'Urban Chic', desc:'도시적이고 시크한' },
+    { name:'Modern Minimal', desc:'미니멀하고 세련된' },
+    { name:'City Muse', desc:'자유롭고 개성있는' }
+  ],
+  '청순': [
+    { name:'Pure Glow', desc:'맑고 청초한' },
+    { name:'Soft Bloom', desc:'부드럽고 꽃같은' },
+    { name:'Natural Grace', desc:'자연스럽고 편안한' }
+  ],
+  '아이돌': [
+    { name:'Fresh Star', desc:'화사하고 빛나는' },
+    { name:'Girl Crush', desc:'강렬하고 매력적인' },
+    { name:'Dreamy Pop', desc:'몽환적이고 트렌디한' }
+  ],
+  '소개팅': [
+    { name:'Lovely Natural', desc:'호감가고 자연스러운' },
+    { name:'Sweet Charm', desc:'사랑스럽고 따뜻한' },
+    { name:'Gentle Glow', desc:'깨끗하고 건강한' }
+  ],
+  '출근': [
+    { name:'Smart Elegance', desc:'단정하고 신뢰감있는' },
+    { name:'Professional Chic', desc:'전문적이고 세련된' },
+    { name:'Refined Classic', desc:'클래식하고 안정적인' }
+  ]
+};
+
+const TRANSFORM_DATA = {
+  '고급': { hair_colors:['Ash Brown','Rose Brown','Cocoa Brown','Dark Mocha'], hair_styles:['Layered Cut','Hush Cut','Long Bob','Face Layer'], lips:['Rose Beige','Dusty Rose','Fig Brown','Nude Pink'], eyes:['Mocha Brown','Soft Brown','Rose Mauve'], fashion:['Quiet Luxury','Old Money','French Chic'] },
+  '세련': { hair_colors:['Dark Mocha','Ash Black','Cool Brown','Blue Black'], hair_styles:['Short Bob','Straight Cut','Blunt Bob','Deep Part'], lips:['Brick Rose','Berry Mauve','Deep Rose','Fig Brown'], eyes:['Ash Taupe','Smoke Brown','Dark Mauve'], fashion:['Urban Chic','Korean Minimal','Modern Cool'] },
+  '청순': { hair_colors:['Natural Brown','Warm Beige','Soft Black','Caramel'], hair_styles:['Curtain Bangs','C-Curl','Long Wave','See-through Bangs'], lips:['Nude Pink','Warm Coral','Peach Rose','Baby Pink'], eyes:['Peach Coral','Warm Beige','Soft Pink'], fashion:['Pure Glow','Soft Bloom','Natural Chic'] },
+  '아이돌': { hair_colors:['Warm Brown','Honey Blonde','Copper Rose','Burgundy'], hair_styles:['S-Curl','Long Wave','Face Layer','Curtain Bangs'], lips:['Warm Coral','Cherry Red','Hot Pink','Raspberry'], eyes:['Peach Coral','Rose Gold','Warm Bronze'], fashion:['K-Pop Fresh','Dreamy Pop','Color Play'] },
+  '소개팅': { hair_colors:['Natural Brown','Soft Caramel','Warm Beige','Light Brown'], hair_styles:['C-Curl','Hush Cut','Long Wave','Face Layer'], lips:['Nude Pink','Rose Beige','Peach Pink','Coral Rose'], eyes:['Soft Brown','Peach Coral','Rose Mauve'], fashion:['Lovely Natural','Sweet Charm','Feminine Grace'] },
+  '출근': { hair_colors:['Dark Brown','Natural Black','Deep Mocha','Espresso'], hair_styles:['Straight Cut','Short Bob','Blunt Bob','Half Up'], lips:['Dusty Rose','Brick Rose','Berry Mauve','Fig Brown'], eyes:['Ash Taupe','Mocha Brown','Soft Brown'], fashion:['Smart Elegance','Professional Chic','Classic Refined'] }
+};
+
+// 기획: 스타일 선택 → 바로 3개 컨셉 카드 표시 (단계 하나 제거)
+function selectStyle(btn) {
+  document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.selectedStyle = btn.dataset.style;
+  state.selectedConcept = null;
+
+  const concepts = CONCEPTS[state.selectedStyle] || [];
+  const container = document.getElementById('concept-cards');
+  container.innerHTML = '';
+  concepts.forEach((c) => {
+    const card = document.createElement('div');
+    card.className = 'concept-card-mini';
+    card.dataset.concept = c.name;
+    card.innerHTML = `<strong>${c.name}</strong><span>${c.desc}</span>`;
+    card.onclick = () => selectConcept(card, c.name);
+    container.appendChild(card);
+  });
+
+  document.getElementById('concept-section').style.display = 'block';
+  document.getElementById('btn-transform').disabled = true;
+
+  // 스크롤해서 컨셉 카드 보이게
+  setTimeout(() => {
+    document.getElementById('concept-section').scrollIntoView({behavior:'smooth', block:'nearest'});
+  }, 100);
+}
+
+function selectConcept(el, name) {
+  document.querySelectorAll('.concept-card-mini').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  state.selectedConcept = name;
+  document.getElementById('btn-transform').disabled = false;
+}
+
+async function generateTransform() {
+  if(!state.selectedStyle || !state.selectedConcept) return;
+  document.getElementById('gen-loading').classList.add('active');
+  document.getElementById('gen-loading-text').textContent = '변신 컨셉 생성 중...';
+  await new Promise(r => setTimeout(r, 1800));
+  document.getElementById('gen-loading').classList.remove('active');
+  renderTransformResult();
+}
+
+function showPaywall() {
+  const pw = document.getElementById('transform-paywall');
+  if(pw) { pw.style.display = 'block'; pw.scrollIntoView({behavior:'smooth'}); }
+}
+
+const AI_CHANGE_DATA = {
+  '고급':   [['고급스러움','+18%'],['세련됨','+14%'],['존재감','+11%']],
+  '세련':   [['도시적 분위기','+16%'],['세련됨','+19%'],['카리스마','+13%']],
+  '청순':   [['청순함','+20%'],['친근함','+15%'],['호감도','+17%']],
+  '아이돌': [['화사함','+22%'],['생동감','+18%'],['존재감','+14%']],
+  '소개팅': [['호감도','+21%'],['친근함','+16%'],['자연스러움','+13%']],
+  '출근':   [['신뢰감','+17%'],['단정함','+20%'],['전문성','+15%']],
+};
+
+function renderTransformResult() {
+  const style = state.selectedStyle;
+  const data = TRANSFORM_DATA[style] || TRANSFORM_DATA['고급'];
+
+  document.getElementById('transform-result-title').textContent = state.selectedConcept;
+  document.getElementById('transform-result-sub').textContent = style + ' 스타일 · AI 맞춤 변신 제안';
+  document.getElementById('ba-style-name').textContent = state.selectedConcept.toUpperCase();
+  document.getElementById('ba-style-desc').textContent = style + ' 스타일';
+
+  // AI 예측 변화량 업데이트
+  const changeData = AI_CHANGE_DATA[style] || AI_CHANGE_DATA['고급'];
+  changeData.forEach((d, i) => {
+    const n = i + 1;
+    const lEl = document.getElementById('change-label' + n);
+    const vEl = document.getElementById('change-val' + n);
+    if(lEl) lEl.textContent = d[0];
+    if(vEl) vEl.textContent = d[1];
+  });
+
+  const tags = document.getElementById('change-tags');
+  tags.innerHTML = `
+    <div class="change-row"><div class="change-row-label">헤어 컬러</div><div class="change-chips">${data.hair_colors.map(c=>`<span class="change-chip">${c}</span>`).join('')}</div></div>
+    <div class="change-row"><div class="change-row-label">헤어스타일</div><div class="change-chips">${data.hair_styles.map(c=>`<span class="change-chip rose">${c}</span>`).join('')}</div></div>
+    <div class="change-row"><div class="change-row-label">립 컬러</div><div class="change-chips">${data.lips.map(c=>`<span class="change-chip">${c}</span>`).join('')}</div></div>
+    <div class="change-row"><div class="change-row-label">아이섀도우</div><div class="change-chips">${data.eyes.map(c=>`<span class="change-chip rose">${c}</span>`).join('')}</div></div>
+    <div class="change-row"><div class="change-row-label">패션 무드</div><div class="change-chips">${data.fashion.map(c=>`<span class="change-chip gold">${c}</span>`).join('')}</div></div>`;
+
+  document.getElementById('transform-step1').style.display = 'none';
+  document.getElementById('transform-step2').style.display = 'block';
+
+  // 기획: 잠금 해제 전 적용 예정 항목으로 궁금증 유발
+  const previewItems = document.getElementById('paywall-preview-items');
+  if(previewItems) {
+    const hair = data.hair_colors[0];
+    const hairStyle = data.hair_styles[0];
+    const lip = data.lips[0];
+    const fashion = data.fashion[0];
+    previewItems.innerHTML = [
+      `${hair} 헤어 컬러`,
+      `${hairStyle} 헤어스타일`,
+      `${lip} 립 메이크업`,
+      `${fashion} 스타일링`,
+      `비추천 스타일 가이드`,
+    ].map(item => `<div class="paywall-preview-item">${item}</div>`).join('');
+  }
+
+  setTimeout(() => {
+    const pw = document.getElementById('transform-paywall');
+    if(pw) pw.style.display = 'block';
+  }, 500);
+}
+
+function resetTransform() {
+  state.selectedStyle = null;
+  state.selectedConcept = null;
+  document.getElementById('transform-step1').style.display = 'block';
+  document.getElementById('transform-step2').style.display = 'none';
+  document.getElementById('concept-section').style.display = 'none';
+  const pw = document.getElementById('transform-paywall');
+  if(pw) pw.style.display = 'none';
+  document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('selected'));
+}
+
+// ══════════════════════════════
+// SALES PAGE 이동 (6→7단계)
+// ══════════════════════════════
+function goToSalesPage() {
+  if (!state.analysisResult) { showToast('분석 결과가 없어요. 셀카를 먼저 업로드해주세요 📷'); return; }
+  try {
+    sessionStorage.setItem('tom_result', JSON.stringify(state.analysisResult));
+    if (state.imageBase64) sessionStorage.setItem('tom_image', 'data:' + state.imageMime + ';base64,' + state.imageBase64);
+  } catch(_) {}
+  // iframe 안에서 실행될 경우 최상위 창으로 이동
+  const target = window.top || window;
+  target.location.href = 'sales_page.html';
+}
+
+// ══════════════════════════════
+// RESET
+// ══════════════════════════════
+function resetAll() {
+  state = { imageBase64:null, imageMime:'image/jpeg', analysisResult:null, currentTab:'mood', selectedStyle:null, selectedConcept:null, analyzed:false };
+  homePreview.style.display = 'none';
+  homePreview.src = '';
+  homeUploadPlaceholder.style.display = '';
+  homeFileInput.value = '';
+  document.getElementById('share-card-wrap').style.display = 'none';
+  ['astep1','astep2','astep3','astep4','astep5'].forEach(id => document.getElementById(id).classList.remove('active','done'));
+  resetTransform();
+  showPage('home');
+}
+
+// ══════════════════════════════
+// TOAST
+// ══════════════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ══════════════════════════════
+// INIT — 기획: Mood 탭 기본값
+// ══════════════════════════════
+showPage('home');
+</script>
+</body>
+</html>

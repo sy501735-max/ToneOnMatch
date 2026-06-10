@@ -12,6 +12,10 @@
       "dest": "/api/$1"
     },
     {
+      "src": "/",
+      "dest": "/public/landing_page.html"
+    },
+    {
       "src": "/(.*)",
       "dest": "/public/$1"
     }

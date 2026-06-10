@@ -13,7 +13,7 @@
     },
     {
       "src": "/",
-      "dest": "/public/landing_page.html"
+      "dest": "/public/index.html"
     },
     {
       "src": "/(.*)",

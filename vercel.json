@@ -17,7 +17,7 @@
     },
     {
       "src": "/",
-      "dest": "/public/index.html"
+      "dest": "/public/landing_page.html"
     },
     {
       "src": "/(.*)",
